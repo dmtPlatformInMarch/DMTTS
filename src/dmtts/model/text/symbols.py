@@ -172,7 +172,7 @@ def get_prefix_cleaned_text(cleaned_text, language):
 
 
 
-def cleaned_text_to_sequence(cleaned_text, tones, language, lang_list=None, add_prefix_language=False):
+def cleaned_text_to_sequence(cleaned_text, tones, language, lang_list=None, add_prefix_language=False, skip_no_symbol_when_infernce=True):
     """Converts a string of text to a sequence of IDs corresponding to the symbols in the text.
     Args:
       text: string to convert to a sequence
@@ -187,16 +187,24 @@ def cleaned_text_to_sequence(cleaned_text, tones, language, lang_list=None, add_
     symbols, _ = get_symbol(lang_list=lang_list, add_prefix_language=add_prefix_language)
     #print(f"symbols:\n{symbols}")
     symbol_to_id_map = symbol_to_id(symbols)
-    phones = [symbol_to_id_map[symbol] for symbol in cleaned_text]
+    if skip_no_symbol_when_infernce:
+        #print("replace wrong symbol with 0")
+        phones = [symbol_to_id_map.get(s, 0) for s in cleaned_text]
+
+    else:
+        phones = [symbol_to_id_map[symbol] for symbol in cleaned_text]
     
     tone_map, total_tones = get_tone_id(lang_list)
     tone_start = tone_map[language]
-    #print(f"tones : {tones}")
+    #print(f"middle tones : {tones}")
     tones = [i + tone_start for i in tones]
 
     lang_id_map, _ = get_language_id(lang_list)
     lang_id = lang_id_map[language]
     lang_ids = [lang_id for i in phones]
+    #print(f"phones  :{phones}")
+    #print(f"tones   :{tones}")
+    #print(f"lang_ids:{lang_ids}")
     return phones, tones, lang_ids
 
 
