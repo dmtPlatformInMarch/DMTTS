@@ -10,10 +10,16 @@ def split_sentence(text, min_len=2, language_str='EN'):
     if language_str in []:
         sentences = split_sentences_latin(text, min_len=min_len)
         #print(f"sentences of EN & KR : {sentences}")
+    #elif language_str in ['JP']:
+    #    sentences = split_sentences_jp(text, min_lne=min_len)
+
     else :#language_str in ['ZH', 'TH', 'VI', 'JP', 'KR']:
         sentences = split_sentences_zh(text, min_len=min_len)
         #print(f"sentences of ZH & TH & VI & JP : {sentences}")
     return sentences
+
+#def split_sentences_jp(text, min_len=10):
+
 
 
 def split_sentences_latin(text, min_len=10):
@@ -26,6 +32,11 @@ def split_sentences_latin(text, min_len=10):
 
 
 def split_sentences_zh(text, min_len=2):
+
+    if ("こんにちは" in text) or ("コンニチハ" in text):
+        text = text.replace("こんにちは", ". hello_jp_tolerance.")
+        text = text.replace("コンニチハ", ". hello_jp_tolerance.")
+
     text = re.sub('[。！？；]', '.', text)
     text = re.sub('[，]', ',', text)
     # 将文本中的换行符、空格和制表符替换为空格
