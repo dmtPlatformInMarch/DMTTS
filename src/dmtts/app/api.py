@@ -14,7 +14,6 @@ from dmtts.utils import hparam_utils as utils
 from dmtts.model import commons
 from dmtts.model.synthesizer import SynthesizerTrn
 from dmtts.utils.split_utils import split_sentence
-#from .mel_processing import spectrogram_torch, spectrogram_torch_conv
 from dmtts.utils.download_utils import load_or_download_config, load_or_download_model
 
 class TTS(nn.Module):
@@ -32,14 +31,12 @@ class TTS(nn.Module):
         if 'cuda' in device:
             assert torch.cuda.is_available()
 
-        # config만 받음
         hps = load_or_download_config(language, use_hf=use_hf, config_path=config_path)
 
         num_languages = hps.num_languages
         num_tones = hps.num_tones
         symbols = hps.symbols
         lang_list = hps.data.lang_list
-        #lang_list = hps.lang_list # ["VI"]
 
         model = SynthesizerTrn(
             len(symbols),
@@ -62,12 +59,12 @@ class TTS(nn.Module):
         checkpoint_dict = load_or_download_model(language, device, use_hf=use_hf, ckpt_path=ckpt_path)
         self.model.load_state_dict(checkpoint_dict['model'], strict=True)
         
-        language = language.split('_')[0] # for multi-lingual
-        self.language = language #'ZH_MIX_EN' if language == 'ZH' else language # we support a ZH_MIX_EN model
+        language = language.split('_')[0] # for multi-lingual: FUTURE WORK
+        self.language = language 
         
         
         
-        self.lang_list= lang_list##########################
+        self.lang_list= lang_list
     @staticmethod
     def audio_numpy_concat(segment_data_list, sr, speed=1.):
         audio_segments = []
@@ -90,7 +87,7 @@ class TTS(nn.Module):
     def tts_to_file(self, text, speaker_id, output_path=None, sdp_ratio=0.2, noise_scale=0.6, noise_scale_w=0.8, speed=1.0, pbar=None, format=None, position=None, quiet=False,):
         language = self.language
         texts = self.split_sentences_into_pieces(text, language, quiet)
-        #print(f"text        :{text}")
+        print(f"tts_to_file input text: {texts}")
         audio_list = []
         if pbar:
             tx = pbar(texts)
@@ -104,8 +101,19 @@ class TTS(nn.Module):
         for t in tx:
             if language in ['EN', 'ZH_MIX_EN']:
                 t = re.sub(r'([a-z])([A-Z])', r'\1 \2', t)
+            ################################################################
+            if language in ['JP']:
+                t = t.strip()
+                # ① “hello_jp_tolerance”는 미리 녹음된 wav로 대체
+                if "hello_jp_tolerance" in t:
+                    hello_audio, sr = soundfile.read("./hello_jp_tolerance.wav")
+                    hello_audio = hello_audio.astype(np.float32)
+                    audio_list.append(hello_audio)
+                    # 50ms silence 추가 (자연스러운 연결)
+                    audio_list.append(np.zeros(int(sr * 0.05), dtype=np.float32))
+                    continue
+            ################################################################
             device = self.device
-            #def get_text_for_tts_infer(text, language_str, hps, device, lang_list=None):
             phones, tones, lang_ids = utils.get_text_for_tts_infer(t, language, self.hps, device, self.lang_list)
 
             with torch.no_grad():
@@ -128,7 +136,8 @@ class TTS(nn.Module):
                         length_scale=1. / speed,
                     )[0][0, 0].data.cpu().float().numpy()
                 del x_tst, tones, lang_ids, x_tst_lengths, speakers
-                # 
+
+
             audio_list.append(audio)
         torch.cuda.empty_cache()
         audio = self.audio_numpy_concat(audio_list, sr=self.hps.data.sampling_rate, speed=speed)
