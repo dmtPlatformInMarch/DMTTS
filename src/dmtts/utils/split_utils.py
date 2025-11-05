@@ -6,7 +6,7 @@ import soundfile as sf
 import torchaudio
 import re
 
-def split_sentence(text, min_len=10, language_str='EN'):
+def split_sentence(text, min_len=2, language_str='EN'):
     if language_str in []:
         sentences = split_sentences_latin(text, min_len=min_len)
         #print(f"sentences of EN & KR : {sentences}")
@@ -25,7 +25,7 @@ def split_sentences_latin(text, min_len=10):
     return [item.strip() for item in txtsplit(text, 256, 512) if item.strip()]
 
 
-def split_sentences_zh(text, min_len=10):
+def split_sentences_zh(text, min_len=2):
     text = re.sub('[。！？；]', '.', text)
     text = re.sub('[，]', ',', text)
     # 将文本中的换行符、空格和制表符替换为空格
