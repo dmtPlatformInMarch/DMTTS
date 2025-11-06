@@ -94,21 +94,21 @@ python -m unidic download
 
 You can easily download pre-trained **DMTTS** models for each supported language from **Hugging Face**.
 
+### 📁 Download Path in Source Code
+All model download and configuration logic is implemented in: `dmtts/src/utils/download_utils.py`
+
 ### 🌍 Supported Languages
 ```
-    LANG_TO_HF_REPO_ID = {
-        'EN': 'kijoongkwon99/DMTTS-English',
-        'JP': 'kijoongkwon99/DMTTS-Japanese',
-        'ZH': 'kijoongkwon99/DMTTS-Chinese',
-        'KR': 'kijoongkwon99/DMTTS-Korean',
-        'TH': 'kijoongkwon99/DMTTS-Thai',
-        'VI': 'kijoongkwon99/DMTTS-Vietnamese',
+LANG_TO_HF_REPO_ID = {
+    'EN': 'kijoongkwon99/DMTTS-English',
+    'JP': 'kijoongkwon99/DMTTS-Japanese',
+    'ZH': 'kijoongkwon99/DMTTS-Chinese',
+    'KR': 'kijoongkwon99/DMTTS-Korean',
+    'TH': 'kijoongkwon99/DMTTS-Thai',
+    'VI': 'kijoongkwon99/DMTTS-Vietnamese',
 }
 ```
 ---
-
-### 📁 Download Path in Source Code
-All model download and configuration logic is implemented in: `dmtts/src/utils/download_utils.py`
 
 
 
