@@ -108,7 +108,9 @@ class TTS(nn.Module):
                 t = t.strip()
                 # ① “hello_jp_tolerance”는 미리 녹음된 wav로 대체
                 if "hello_jp_tolerance" in t:
-                    hello_path = os.path.join(BASE_DIR, "hello_jp_tolerance.wav")
+                    hello_path = os.path.join(BASE_DIR, "..", "assets", "hello_jp_tolerance.wav")
+
+                    #hello_path = os.path.join(BASE_DIR, "hello_jp_tolerance.wav")
                     hello_audio, sr = soundfile.read(hello_path)
                     hello_audio = hello_audio.astype(np.float32)
                     audio_list.append(hello_audio)
