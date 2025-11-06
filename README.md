@@ -95,15 +95,16 @@ python -m unidic download
 You can easily download pre-trained **DMTTS** models for each supported language from **Hugging Face**.
 
 ### 🌍 Supported Languages
-| Language | Model Repository | Hugging Face Link |
-|-----------|------------------|-------------------|
-| 🇬🇧 English | `kijoongkwon99/DMTTS-English` | [🔗 Link](https://huggingface.co/kijoongkwon99/DMTTS-English) |
-| 🇨🇳 Chinese | `kijoongkwon99/DMTTS-Chinese` | [🔗 Link](https://huggingface.co/kijoongkwon99/DMTTS-Chinese) |
-| 🇰🇷 Korean | `kijoongkwon99/DMTTS-Korean` | [🔗 Link](https://huggingface.co/kijoongkwon99/DMTTS-Korean) |
-| 🇯🇵 Japanese | `kijoongkwon99/DMTTS-Japanese` | [🔗 Link](https://huggingface.co/kijoongkwon99/DMTTS-Japanese) |
-| 🇻🇳 Vietnamese | `kijoongkwon99/DMTTS-Vietnamese` | [🔗 Link](https://huggingface.co/kijoongkwon99/DMTTS-Vietnamese) |
-| 🇹🇭 Thai | `kijoongkwon99/DMTTS-Thai` | [🔗 Link](https://huggingface.co/kijoongkwon99/DMTTS-Thai) |
-
+```
+    LANG_TO_HF_REPO_ID = {
+        'EN': 'kijoongkwon99/DMTTS-English',
+        'JP': 'kijoongkwon99/DMTTS-Japanese',
+        'ZH': 'kijoongkwon99/DMTTS-Chinese',
+        'KR': 'kijoongkwon99/DMTTS-Korean',
+        'TH': 'kijoongkwon99/DMTTS-Thai',
+        'VI': 'kijoongkwon99/DMTTS-Vietnamese',
+}
+```
 ---
 
 ### 📁 Download Path in Source Code
