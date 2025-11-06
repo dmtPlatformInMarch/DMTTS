@@ -16,6 +16,8 @@ from dmtts.model.synthesizer import SynthesizerTrn
 from dmtts.utils.split_utils import split_sentence
 from dmtts.utils.download_utils import load_or_download_config, load_or_download_model
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 class TTS(nn.Module):
     def __init__(self, 
                 language, # lang_list를 받아도 됨
@@ -106,7 +108,8 @@ class TTS(nn.Module):
                 t = t.strip()
                 # ① “hello_jp_tolerance”는 미리 녹음된 wav로 대체
                 if "hello_jp_tolerance" in t:
-                    hello_audio, sr = soundfile.read("./hello_jp_tolerance.wav")
+                    hello_path = os.path.join(BASE_DIR, "hello_jp_tolerance.wav")
+                    hello_audio, sr = soundfile.read(hello_path)
                     hello_audio = hello_audio.astype(np.float32)
                     audio_list.append(hello_audio)
                     # 50ms silence 추가 (자연스러운 연결)
