@@ -124,14 +124,13 @@ make sure that BOTH of the following files exist inside each directory:<br>
   - checkpoint.pth  → the model weights
   - config.json     → the model configuration
 <br>
-```
-Example:
-  /to/your/local/path/
-      ├── checkpoint.pth
-      └── config.json
-```
-<br>
+
+Example:<br>
+/to/your/local/path/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── checkpoint.pth<br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── config.json<br>
 Otherwise, local loading will fail and you may need to re-download them.
+
 ---
 
 
