@@ -119,16 +119,16 @@ LANG_TO_LOCAL_REPO_ID = {
     'VI': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Vietnamese',
 }
 ```
-If you want to load models locally instead of from Hugging Face,
-make sure that BOTH of the following files exist inside each directory:
+If you want to load models locally instead of from Hugging Face,<br>
+make sure that BOTH of the following files exist inside each directory:<br>
   - checkpoint.pth  → the model weights
   - config.json     → the model configuration
-
-Example:
-  /to/your/local/path/
-      ├── checkpoint.pth
-      └── config.json
-
+<br>
+Example:<br>
+  /to/your/local/path/<br>
+      ├── checkpoint.pth<br>
+      └── config.json<br>
+<br>
 Otherwise, local loading will fail and you may need to re-download them.
 ---
 
