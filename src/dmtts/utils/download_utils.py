@@ -13,25 +13,74 @@ LANG_TO_HF_REPO_ID = {
     'VI': 'kijoongkwon99/DMTTS-Vietnamese',
 }
 
+
+LANG_TO_LOCAL_REPO_ID = {
+    'EN': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-English',
+    'JP': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Japanese',
+    'ZH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Chinese',
+    'KR': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Korean',
+    'TH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Thai',
+    'VI': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Vietnamese',
+}
+
 def load_or_download_config(locale, use_hf=True, config_path=None):
-    print("LOAD_OR_DOWNNLOAD_CONFIG")
-    if config_path is None:
-        language = locale.split('-')[0].upper()
-        if use_hf:
+    print("LOAD_OR_DOWNLOAD_CONFIG")
+    language = locale.split('-')[0].upper()
+
+    if config_path is not None:
+        return utils.get_hparams_from_file(config_path)
+
+    if use_hf:
+        try:
             assert language in LANG_TO_HF_REPO_ID
-            config_path = hf_hub_download(repo_id=LANG_TO_HF_REPO_ID[language], filename="config.json")
+            config_path = hf_hub_download(
+                repo_id=LANG_TO_HF_REPO_ID[language],
+                filename="config.json"
+            )
+        except Exception as e:
+
+            use_hf = False  # fallback to local
+
+    if not use_hf:
+        assert language in LANG_TO_LOCAL_REPO_ID
+        config_path = os.path.join(
+            LANG_TO_LOCAL_REPO_ID[language],
+            "config.json"
+        )
 
     return utils.get_hparams_from_file(config_path)
 
+
+
+
 def load_or_download_model(locale, device, use_hf=True, ckpt_path=None):
     print("LOAD_OR_DOWNLOAD_MODEL")
-    if ckpt_path is None:
-        language = locale.split('-')[0].upper()
-        if use_hf:
+    language = locale.split('-')[0].upper()
+
+
+    if ckpt_path is not None:
+        return torch.load(ckpt_path, map_location=device)
+
+    if use_hf:
+        try:
             assert language in LANG_TO_HF_REPO_ID
-            ckpt_path = hf_hub_download(repo_id=LANG_TO_HF_REPO_ID[language], filename="checkpoint.pth")
+            ckpt_path = hf_hub_download(
+                repo_id=LANG_TO_HF_REPO_ID[language],
+                filename="checkpoint.pth"
+            )
+        except Exception as e:
+            use_hf = False  # fallback to local
+
+
+    if not use_hf:
+        assert language in LANG_TO_LOCAL_REPO_ID
+        ckpt_path = os.path.join(
+            LANG_TO_LOCAL_REPO_ID[language],
+            "checkpoint.pth"
+        )
 
     return torch.load(ckpt_path, map_location=device)
+
 
 
 
