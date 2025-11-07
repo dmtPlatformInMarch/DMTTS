@@ -99,6 +99,7 @@ All model download and configuration logic is implemented in: `dmtts/src/utils/d
 
 ### 🌍 Supported Languages
 ```
+# When downloading from Hugging Face Hub
 LANG_TO_HF_REPO_ID = {
     'EN': 'kijoongkwon99/DMTTS-English',
     'JP': 'kijoongkwon99/DMTTS-Japanese',
@@ -107,7 +108,28 @@ LANG_TO_HF_REPO_ID = {
     'TH': 'kijoongkwon99/DMTTS-Thai',
     'VI': 'kijoongkwon99/DMTTS-Vietnamese',
 }
+
+# When loading from local directory
+LANG_TO_LOCAL_REPO_ID = {
+    'EN': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-English',
+    'JP': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Japanese',
+    'ZH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Chinese',
+    'KR': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Korean',
+    'TH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Thai',
+    'VI': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Vietnamese',
+}
 ```
+If you want to load models locally instead of from Hugging Face,
+make sure that BOTH of the following files exist inside each directory:
+  - checkpoint.pth  → the model weights
+  - config.json     → the model configuration
+
+Example:
+  /to/your/local/path/
+      ├── checkpoint.pth
+      └── config.json
+
+Otherwise, local loading will fail and you may need to re-download them.
 ---
 
 
