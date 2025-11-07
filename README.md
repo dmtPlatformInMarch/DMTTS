@@ -124,8 +124,8 @@ make sure that BOTH of the following files exist inside each directory:<br>
   - checkpoint.pth  → the model weights
   - config.json     → the model configuration
 <br>
-Example:
 ```
+Example:
   /to/your/local/path/
       ├── checkpoint.pth
       └── config.json
