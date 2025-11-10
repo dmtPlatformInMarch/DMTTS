@@ -16,6 +16,15 @@ if __name__ == "__main__" and __package__ is None:
 
 from dmtts.app.api import TTS  # noqa: E402
 
+LANG_TO_LOCAL_REPO_ID = {
+    'EN': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-English',
+    'JP': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Japanese',
+    'ZH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Chinese',
+    'KR': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Korean',
+    'TH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Thai',
+    'VI': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Vietnamese',
+}
+
 def parse_args():
     p = argparse.ArgumentParser(description="DMTTS CLI inference")
     p.add_argument("-v", "--version_of_model", type=int, default=1, help="Model version number (int)")
@@ -56,7 +65,7 @@ def main():
         model = TTS(language=args.language, device=args.device, config_path=config_path, ckpt_path=ckpt_path)
     else:
         # HF에서 자동 다운로드 사용
-        model = TTS(language=args.language, device=args.device)
+        model = TTS(language=args.language, device=args.device, use_hf=True, local_repo_path_dict=LANG_TO_LOCAL_REPO_ID) # False for local
 
     if args.list_speakers:
         for name, sid in model.hps.data.spk2id.items():

@@ -14,16 +14,7 @@ LANG_TO_HF_REPO_ID = {
 }
 
 
-LANG_TO_LOCAL_REPO_ID = {
-    'EN': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-English',
-    'JP': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Japanese',
-    'ZH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Chinese',
-    'KR': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Korean',
-    'TH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Thai',
-    'VI': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Vietnamese',
-}
-
-def load_or_download_config(locale, use_hf=True, config_path=None):
+def load_or_download_config(locale, use_hf=True, config_path=None, local_repo_path_dict=None):
     print("LOAD_OR_DOWNLOAD_CONFIG")
     language = locale.split('-')[0].upper()
 
@@ -42,18 +33,20 @@ def load_or_download_config(locale, use_hf=True, config_path=None):
             use_hf = False  # fallback to local
 
     if not use_hf:
-        assert language in LANG_TO_LOCAL_REPO_ID
-        config_path = os.path.join(
-            LANG_TO_LOCAL_REPO_ID[language],
-            "config.json"
-        )
+        assert local_repo_path_dict is not None, \
+            "local_repo_path_dict must be provided when use_hf=False"
+
+        assert language in local_repo_path_dict, \
+            f"{language} not found in local_repo_path_dict"
+
+        config_path = os.path.join(local_repo_path_dict[language], "config.json")
 
     return utils.get_hparams_from_file(config_path)
 
 
 
 
-def load_or_download_model(locale, device, use_hf=True, ckpt_path=None):
+def load_or_download_model(locale, device, use_hf=True, ckpt_path=None, local_repo_path_dict=None):
     print("LOAD_OR_DOWNLOAD_MODEL")
     language = locale.split('-')[0].upper()
 
@@ -73,11 +66,13 @@ def load_or_download_model(locale, device, use_hf=True, ckpt_path=None):
 
 
     if not use_hf:
-        assert language in LANG_TO_LOCAL_REPO_ID
-        ckpt_path = os.path.join(
-            LANG_TO_LOCAL_REPO_ID[language],
-            "checkpoint.pth"
-        )
+        assert local_repo_path_dict is not None, \
+            "local_repo_path_dict must be provided when use_hf=False"
+
+        assert language in local_repo_path_dict, \
+            f"{language} not found in local_repo_path_dict"
+
+        ckpt_path = os.path.join(local_repo_path_dict[language], "checkpoint.pth")
 
     return torch.load(ckpt_path, map_location=device)
 

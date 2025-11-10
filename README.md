@@ -40,17 +40,28 @@ DEFAULT_TEXT = {
     "JP": "テキスト読み上げの分野は最近急速な発展を遂げています。",
 }
 
+LANG_TO_LOCAL_REPO_ID = {
+    'EN': 'path/to/your/local/path',
+    'JP': 'path/to/your/local/path',
+    'ZH': 'path/to/your/local/path',
+    'KR': 'path/to/your/local/path',
+    'TH': 'path/to/your/local/path',
+    'VI': 'path/to/your/local/path',
+}
 # List of languages to synthesize
 Languages = list(DEFAULT_TEXT.keys())
 
 # Speaking speed
-speed = 1.3
+speed = 1.0
 
 for language in Languages:
     print(f"Generating speech for [{language}]...")
 
     # Load model
-    model = TTS(language=language, device="auto")
+    # if you want to load model from hugging face
+    model = TTS(language=language, device="auto", use_hf=True)
+    # or if you want to load from your own directory
+    # model = TTS(language=language, device="auto", use_hf=False, local_repo_path_dict=LANG_TO_LOCAL_REPO_ID)
 
     # Get speaker information
     speaker_ids = model.hps.data.spk2id
@@ -109,15 +120,6 @@ LANG_TO_HF_REPO_ID = {
     'VI': 'kijoongkwon99/DMTTS-Vietnamese',
 }
 
-# When loading from local directory
-LANG_TO_LOCAL_REPO_ID = {
-    'EN': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-English',
-    'JP': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Japanese',
-    'ZH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Chinese',
-    'KR': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Korean',
-    'TH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Thai',
-    'VI': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Vietnamese',
-}
 ```
 If you want to load models locally instead of from Hugging Face,<br>
 make sure that BOTH of the following files exist inside each directory:<br>
