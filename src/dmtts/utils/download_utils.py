@@ -13,8 +13,16 @@ LANG_TO_HF_REPO_ID = {
     'VI': 'kijoongkwon99/DMTTS-Vietnamese',
 }
 
+LANG_TO_LOCAL_REPO_ID = {
+    'EN': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-English',
+    'JP': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Japanese',
+    'ZH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Chinese',
+    'KR': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Korean',
+    'TH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Thai',
+    'VI': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Vietnamese',
+}
 
-def load_or_download_config(locale, use_hf=True, config_path=None, local_repo_path_dict=None):
+def load_or_download_config_orig(locale, use_hf=True, config_path=None, local_repo_path_dict=None, skip_seed=True):
     print("LOAD_OR_DOWNLOAD_CONFIG")
     language = locale.split('-')[0].upper()
 
@@ -43,10 +51,66 @@ def load_or_download_config(locale, use_hf=True, config_path=None, local_repo_pa
 
     return utils.get_hparams_from_file(config_path)
 
+def load_or_download_config(
+    locale,
+    use_hf=True,
+    config_path=None,
+    local_repo_path_dict=None,
+    skip_seed=True
+):
+    print("LOAD_OR_DOWNLOAD_CONFIG")
+    language = locale.split('-')[0].upper()
+
+    # ① 직접 config 경로가 주어진 경우
+    if config_path is not None:
+        return utils.get_hparams_from_file(config_path)
+
+    # ② Hugging Face에서 받아오는 경우
+    if use_hf:
+        try:
+            assert language in LANG_TO_HF_REPO_ID
+            config_path = hf_hub_download(
+                repo_id=LANG_TO_HF_REPO_ID[language],
+                filename="config.json"
+            )
+        except Exception as e:
+            print(f"[WARN] Hugging Face download failed: {e}")
+            use_hf = False  # fallback
+
+    # ③ 로컬에서 불러오는 경우
+    if not use_hf:
+        assert local_repo_path_dict is not None, \
+            "local_repo_path_dict must be provided when use_hf=False"
+        assert language in local_repo_path_dict, \
+            f"{language} not found in local_repo_path_dict"
+
+        base_path = local_repo_path_dict[language]
+
+        # skip_seed=True면 snapshots 아래 첫 번째 하위폴더를 찾아 들어감
+        if skip_seed and os.path.basename(base_path) == "snapshots":
+            subdirs = [
+                d for d in os.listdir(base_path)
+                if os.path.isdir(os.path.join(base_path, d))
+            ]
+            if subdirs:
+                base_path = os.path.join(base_path, subdirs[0])
+                print(f"[INFO] Auto-selected snapshot dir: {base_path}")
+            else:
+                raise FileNotFoundError(f"No subdirectory found in {base_path}")
+
+        # config.json 또는 checkpoint.pth 자동 탐색
+        config_file = os.path.join(base_path, "config.json")
+        if not os.path.exists(config_file):
+            raise FileNotFoundError(f"config.json not found in {base_path}")
+
+        config_path = config_file
+
+    # ④ 로드
+    return utils.get_hparams_from_file(config_path)
 
 
 
-def load_or_download_model(locale, device, use_hf=True, ckpt_path=None, local_repo_path_dict=None):
+def load_or_download_model_orig(locale, device, use_hf=True, ckpt_path=None, local_repo_path_dict=None):
     print("LOAD_OR_DOWNLOAD_MODEL")
     language = locale.split('-')[0].upper()
 
@@ -76,6 +140,65 @@ def load_or_download_model(locale, device, use_hf=True, ckpt_path=None, local_re
 
     return torch.load(ckpt_path, map_location=device)
 
+
+def load_or_download_model(
+    locale,
+    device,
+    use_hf=True,
+    ckpt_path=None,
+    local_repo_path_dict=None,
+    skip_seed=True
+):
+    print("LOAD_OR_DOWNLOAD_MODEL")
+    language = locale.split('-')[0].upper()
+
+    # ① 명시적으로 ckpt_path가 주어진 경우
+    if ckpt_path is not None:
+        if not os.path.exists(ckpt_path):
+            raise FileNotFoundError(f"Checkpoint not found at: {ckpt_path}")
+        return torch.load(ckpt_path, map_location=device)
+
+    # ② Hugging Face에서 받는 경우
+    if use_hf:
+        try:
+            assert language in LANG_TO_HF_REPO_ID
+            ckpt_path = hf_hub_download(
+                repo_id=LANG_TO_HF_REPO_ID[language],
+                filename="checkpoint.pth"
+            )
+        except Exception as e:
+            print(f"[WARN] Hugging Face download failed: {e}")
+            use_hf = False  # fallback
+
+    # ③ 로컬에서 불러오는 경우
+    if not use_hf:
+        assert local_repo_path_dict is not None, \
+            "local_repo_path_dict must be provided when use_hf=False"
+        assert language in local_repo_path_dict, \
+            f"{language} not found in local_repo_path_dict"
+
+        base_path = local_repo_path_dict[language]
+
+        # skip_seed=True일 때, snapshots 안의 첫 번째 하위 폴더 자동 탐색
+        if skip_seed and os.path.basename(base_path) == "snapshots":
+            subdirs = [
+                d for d in os.listdir(base_path)
+                if os.path.isdir(os.path.join(base_path, d))
+            ]
+            if subdirs:
+                base_path = os.path.join(base_path, subdirs[0])
+                print(f"[INFO] Auto-selected snapshot dir: {base_path}")
+            else:
+                raise FileNotFoundError(f"No subdirectory found in {base_path}")
+
+        # checkpoint.pth 파일 확인
+        ckpt_path = os.path.join(base_path, "checkpoint.pth")
+        if not os.path.exists(ckpt_path):
+            raise FileNotFoundError(f"checkpoint.pth not found in {base_path}")
+
+    # ④ 모델 로드
+    #print(f"[INFO] Loading model from: {ckpt_path}")
+    return torch.load(ckpt_path, map_location=device)
 
 
 

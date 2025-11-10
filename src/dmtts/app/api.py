@@ -25,7 +25,8 @@ class TTS(nn.Module):
                 use_hf=True,
                 config_path=None,
                 ckpt_path=None,
-                local_repo_path_dict=None
+                local_repo_path_dict=None,
+                skip_seed=True,
                 ):
         super().__init__()
         if device == 'auto':
@@ -35,7 +36,7 @@ class TTS(nn.Module):
         if 'cuda' in device:
             assert torch.cuda.is_available()
 
-        hps = load_or_download_config(language, use_hf=use_hf, config_path=config_path, local_repo_path_dict=local_repo_path_dict)
+        hps = load_or_download_config(language, use_hf=use_hf, config_path=config_path, local_repo_path_dict=local_repo_path_dict, skip_seed=skip_seed)
 
         num_languages = hps.num_languages
         num_tones = hps.num_tones
@@ -60,7 +61,7 @@ class TTS(nn.Module):
         self.device = device
     
         # load state_dict: parameter
-        checkpoint_dict = load_or_download_model(language, device, use_hf=use_hf, ckpt_path=ckpt_path,local_repo_path_dict=local_repo_path_dict)
+        checkpoint_dict = load_or_download_model(language, device, use_hf=use_hf, ckpt_path=ckpt_path,local_repo_path_dict=local_repo_path_dict,skip_seed=skip_seed)
         self.model.load_state_dict(checkpoint_dict['model'], strict=True)
         
         language = language.split('_')[0] # for multi-lingual: FUTURE WORK
