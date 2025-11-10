@@ -24,7 +24,9 @@ class TTS(nn.Module):
                 device='auto',
                 use_hf=True,
                 config_path=None,
-                ckpt_path=None):
+                ckpt_path=None,
+                local_repo_path_dict=None
+                ):
         super().__init__()
         if device == 'auto':
             device = 'cpu'
@@ -33,7 +35,7 @@ class TTS(nn.Module):
         if 'cuda' in device:
             assert torch.cuda.is_available()
 
-        hps = load_or_download_config(language, use_hf=use_hf, config_path=config_path)
+        hps = load_or_download_config(language, use_hf=use_hf, config_path=config_path, local_repo_path_dict=local_repo_path_dict)
 
         num_languages = hps.num_languages
         num_tones = hps.num_tones
@@ -58,7 +60,7 @@ class TTS(nn.Module):
         self.device = device
     
         # load state_dict: parameter
-        checkpoint_dict = load_or_download_model(language, device, use_hf=use_hf, ckpt_path=ckpt_path)
+        checkpoint_dict = load_or_download_model(language, device, use_hf=use_hf, ckpt_path=ckpt_path,local_repo_path_dict=local_repo_path_dict)
         self.model.load_state_dict(checkpoint_dict['model'], strict=True)
         
         language = language.split('_')[0] # for multi-lingual: FUTURE WORK
@@ -89,7 +91,8 @@ class TTS(nn.Module):
     def tts_to_file(self, text, speaker_id, output_path=None, sdp_ratio=0.2, noise_scale=0.6, noise_scale_w=0.8, speed=1.0, pbar=None, format=None, position=None, quiet=False,):
         language = self.language
         texts = self.split_sentences_into_pieces(text, language, quiet)
-        print(f"tts_to_file input text: {texts}")
+        #print("HIHIHIHIHHIHHIHIH")
+        #print(f"tts_to_file input text: {texts}")
         audio_list = []
         if pbar:
             tx = pbar(texts)
