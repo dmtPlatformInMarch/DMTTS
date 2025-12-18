@@ -4,7 +4,7 @@ import re
 from g2p_en import G2p
 
 
-from dmtts.model.text.english_utils.abbreviations import expand_abbreviations
+from dmtts.model.text.english_utils.abbreviations import expand_abbreviations, expand_initialisms, additional_replacement, expand_units, expand_special_tokens
 from dmtts.model.text.english_utils.time_norm import expand_time_english
 from dmtts.model.text.english_utils.number_norm import normalize_numbers
 
@@ -174,9 +174,21 @@ def refine_syllables(syllables):
 
 def text_normalize(text):
     text = text.lower()
+    print(f"lower               : {text}\n")
     text = expand_time_english(text)
+    print(f"expand_time_english : {text}\n")
+    text = expand_initialisms(text)
+    print(f"expand_initialisms  : {text}\n")
+    text = expand_special_tokens(text)
+    print(f"expand_special_tokens  : {text}\n")
+    text = expand_units(text)
+    print(f"expand_units        : {text}\n")
     text = normalize_numbers(text)
+    print(f"normalize_numbers   : {text}\n")
     text = expand_abbreviations(text)
+    print(f"expand_abbreviations: {text}\n")
+    text = additional_replacement(text)
+    print(f"additional_replacement: {text}\n")
     return text
 
 
@@ -215,7 +227,7 @@ def g2p(text, pad_start_end=True):
 if __name__ == "__main__":
 
 
-    text = "In this paper, we propose 1 DSPGAN, a N-F-T GAN-based universal vocoder."
+    text = "911 calling. in 2025, there was a 98.34% of decrease, reaching $1,512 deficit."
     text = text_normalize(text)
     phones, tones= g2p(text)
 

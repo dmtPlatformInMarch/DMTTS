@@ -545,11 +545,18 @@ kakasi.setMode("H", "K")  # Hiragana to Katakana
 conv = kakasi.getConverter()
 
 def text_normalize(text):
+    print(f"text: {text}")
     res = unicodedata.normalize("NFKC", text)
+    print(f"res = unicodedata.normalize('NFKC', text) => {res}")
     res = japanese_convert_numbers_to_words(res)
+    print(f"res = japanese_convert_numbers_to_words(res) => {res}")
     res = "".join([i for i in res if is_japanese_character(i)])
+    print(f".join([i for i in res if is_japanese_character(i)]) => {res}")
     res = replace_punctuation(res)
+    print(f"res = replace_punctuation(res) => {res}")
     res = conv.do(res)
+    #res = conv.convert(res)
+    print(f"res = conv.do(res) => {res}")
     return res
 
 
@@ -564,14 +571,16 @@ def distribute_phone(n_phone, n_word):
 
 
 def g2p(norm_text, add_space=False):
-
+    #print(f"norm_text : {norm_text}")
     phs = []
 
     words = norm_text.strip().split(" ")
     for idx, word in enumerate(words):
+        #print(f"word: {word}")
         if not word:
             continue
         phonemes = kata2phoneme(word)
+        print(f"phonemes: {phonemes}")
         phs += list(phonemes)
         if add_space:
             if idx < len(words) -1:
@@ -588,12 +597,10 @@ def g2p(norm_text, add_space=False):
 
 if __name__ == "__main__":
     # tokenizer = AutoTokenizer.from_pretrained("./bert/bert-base-japanese-v3")
-    text = "こんにちは、世界！..."
-    text = 'ええ、僕はおきなと申します。こちらの小さいわらべは杏子。ご挨拶が遅れてしまいすみません。あなたの名は?'
-    text = 'あの、お前以外のみんなは、全員生きてること?'
-    text = "水をマレーシアから買わなくてはならないのです。"
+    text = "こんにちは, 今日は"
+    #text = "今日は"
     text = text_normalize(text)
-    print(text)
+    print(f"text = text_normalize(text) => {text}")
     g2p_phones, g2p_tones = g2p(text)
 
     print(f"g2p_phones  :{g2p_phones}")

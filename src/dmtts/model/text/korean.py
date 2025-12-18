@@ -78,6 +78,7 @@ def g2p(norm_text, add_space=False, delimit_word=True):
         phs += list(phonemes)
     phones = ["_"] + phs + ["_"]
     tones = [0 for i in phones]
+    # print(f"phone: {phones}")
     return phones, tones 
 
 

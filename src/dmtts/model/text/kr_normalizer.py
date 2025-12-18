@@ -63,6 +63,21 @@ class N2gk:
             self.UnitCategory(['도', '℃', '°C', 'C'], 'hanja', self, convert_unit_name=True),
 
         ]
+        self.enrolled_call = {
+            "112", "119", "911"
+        }
+        self.prefix_phone_call = {
+            "010", # default phone prefix
+            "02", # 서울
+            "031", # 경기도
+            "032", # 인천, 부천, 강화
+            "042", # 대전, 세종
+            "051", # 부산
+            "052", # 울산
+            "053", # 대구
+            "062", # 광주
+            "064", # 제주
+        }
         pairs = []
         for cat in self.UNIT_CATEGORIES:
             for unit in cat.units:
@@ -242,7 +257,58 @@ class N2gk:
                 return self.outer.to_hanja(num, natural=natural) + display_unit
 
 
+    def convert_digit_numbers(self, text: str) -> str:
+        DIGIT_KOR = ['공', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
 
+        def convert_number_str_to_korean(num_str: str) -> str:
+            return ''.join([DIGIT_KOR[int(d)] for d in num_str])
+
+        # -------------------- Helper: UNIT 여부 --------------------
+        def starts_with_unit(next_text: str) -> bool:
+            """숫자 바로 뒤에 오는 글자가 unit인지 확인"""
+            for unit, cat in self.unit_category_pairs:  # 이미 정렬된 리스트
+                if next_text.startswith(unit):
+                    return True
+            return False
+
+        # -------------------- Helper: digit-reading 조건 --------------------
+        def should_read_digit(num_str: str) -> bool:
+            # 1) enrolled_call인 경우
+            if num_str in getattr(self, "enrolled_call", set()):
+                return True
+
+            # 2) prefix_phone_call에 해당하는 경우
+            for prefix in getattr(self, "prefix_phone_call", set()):
+                if num_str.startswith(prefix):
+                    return True
+
+            return False
+
+        # -------------------- Main Regex --------------------
+        # 숫자 전체를 잡는 정규식: 1~N 자리 숫자
+        pattern = r'(\d{1,})'
+
+        def replacer(match):
+            num_str = match.group(1)
+
+            # 숫자 다음 글자(문장 전체에서 위치 파악)
+            start = match.end()
+            following_text = text[start:start+5]  # 길게 잡을 필요 없음, 단위는 짧음
+
+            # --- 단위 붙어 있으면 digit reading 금지 ---
+            if starts_with_unit(following_text):
+                return num_str  # 그대로 반환 (digit-reading X)
+
+            # --- digit-reading 조건 검사 ---
+            if should_read_digit(num_str):
+                return convert_number_str_to_korean(num_str)
+
+            # --- digit-reading 조건이 아니면 원래 숫자 그대로 반환 ---
+            return num_str
+
+        # -------------------- 변환 실행 --------------------
+        return re.sub(pattern, replacer, text)
+    
     # ------------------- Practical Parsing Functions -------------------
     def convert_phone_numbers(self, text: str) -> str:
         DIGIT_KOR = ['공', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
@@ -262,6 +328,7 @@ class N2gk:
 
         text = re.sub(pattern_hyphen, hyphen_replacer, text)
         text = re.sub(pattern_full, full_replacer, text)
+        print(f"text: {text}")
         return text
 
     def apply_exceptions(self, text: str) -> str:
@@ -401,7 +468,9 @@ class N2gk:
         #print(f"n2gk : apply exception : {sentence}")
         sentence = self.convert_english_number(sentence)
         #print(f"n2gk : convert english number : {sentence}")
-        sentence = self.convert_phone_numbers(sentence)
+
+        # sentence = self.convert_phone_numbers(sentence)
+        sentence = self.convert_digit_numbers(sentence)
         #print(f"n2gk : convert phone numbers : {sentence}")
 
         #sentence = self.convert_comma_separated_numbers_with_unit(sentence)  # ✅ 이 줄 추가
@@ -497,6 +566,8 @@ class N2gkPlus(N2gk):
         "ME TOO" : "미투",
         "KAI" : "카이",
         "OPEC" : "오펙",
+        #"NIPA" : "나이파",
+        "FAX": "팩스",
 
 
     }
@@ -524,6 +595,7 @@ class N2gkPlus(N2gk):
         #"WWW" : "더블류더블류더블류",
         #"SKG" : "에스케이쥐"
         "KIA" : "기아",
+        "NIPA" : "나이파",
 
     }
 
@@ -567,7 +639,7 @@ class N2gkPlus(N2gk):
         "#": "샵",
         "@": "앳",
         "+": "플러스",
-        "-": "마이너스",
+        "-": "다시",
         "±": "플러스마이너스",
         #"=": "이퀄", #는
         "㎝": "cm",
@@ -625,7 +697,7 @@ class N2gkPlus(N2gk):
 
 
         self.WORD_MAPPING = {
-            **self.UNIT_MAPPING,
+            # **self.UNIT_MAPPING,
             **self.COMMON_ABBR_MAPPING,
             **self.COMPANY_MAPPING,
             #**self.SINGLE_LETTER_MAPPING
@@ -669,10 +741,19 @@ class N2gkPlus(N2gk):
 
     def apply_word_mapping(self, text: str) -> str:
         # Add space between English and Korean words
+        # print(f"APPLY_WORD_MAPPING")
+        # print(f"text: {text}")
         text = re.sub(r'([a-zA-Z])([가-힣])', r'\1 \2', text)
         text = re.sub(r'([가-힣])([a-zA-Z])', r'\1 \2', text)
 
+        # print(f"text: {text}")
+        # COMPANY_MAPPING 단어 단위 매핑
+        for eng, kor in self.WORD_MAPPING.items():
+            pattern = r'\b{}\b'.format(re.escape(eng))
+            text = re.sub(pattern, kor, text)
+        # print(f"after word_mapping text: {text}")
         text = ''.join([self.SINGLE_LETTER_MAPPING.get(c, c) for c in text])
+        # print(f"after singgle letter mapping text: {text}")
 
         return text
 
@@ -734,9 +815,9 @@ class N2gkPlus(N2gk):
         sentence = self.convert_history_event(sentence)
         #print(f"n2gk+ : convert_history_event : {sentence}")
         sentence = super().__call__(sentence)
-        #print(f"n2gk+ : call N2gk : {sentence}")
+        # print(f"n2gk+ : call N2gk : {sentence}")
         sentence = self.apply_word_mapping(sentence)
-        #print(f"n2gk+ : apply_word_mapping : {sentence}")
+        # print(f"n2gk+ : apply_word_mapping : {sentence}")
         return sentence
 
     def run_n2gkplus(

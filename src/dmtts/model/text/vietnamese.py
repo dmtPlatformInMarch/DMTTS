@@ -14,6 +14,10 @@ CITATION
 from typing import List, Tuple
 import re
 import unicodedata
+import os
+import sys
+
+sys.stderr = open(os.devnull, 'w')  # 모든 stderr 출력 버리기
 
 
 
@@ -192,12 +196,54 @@ if __name__ == "__main__":
     phoneme = vi2IPA(vi_text)
     print(f"vi_text     :{vi_text}\n")
     print(f"vi2IPA      :{phoneme}\n")
+    
+    #phoneme_split = vi2IPA_split(vi_text, delimit="/")
+    #print(f"vi2IPA_split:{phoneme_split}")
+
+
+    import subprocess, json, textwrap, os
+
+    def silent_vi2IPA_split(text, delimit="/"):
+        code = textwrap.dedent(f"""
+        from viphoneme import vi2IPA_split
+        import json
+        print(json.dumps(vi2IPA_split({text!r}, delimit={delimit!r})))
+        """)
+
+        # 🚫 stderr를 완전히 /dev/null로 연결 (C write까지 차단)
+        with open(os.devnull, 'w') as devnull:
+            result = subprocess.run(
+                ["python3", "-c", code],
+                stdout=subprocess.PIPE,
+                stderr=devnull,   # 핵심: stderr 완전 차단
+                text=True,
+            )
+
+        if not result.stdout.strip():
+            print("[silent_vi2IPA_split] Warning: empty stdout")
+            return None
+
+        try:
+            return json.loads(result.stdout.strip())
+        except json.JSONDecodeError:
+            print("[silent_vi2IPA_split] JSON decode error, raw output:", result.stdout)
+            return None
+
+
+
     phoneme_split = vi2IPA_split(vi_text, delimit="/")
-    print(f"vi2IPA_split:{phoneme_split}")
+    print(f"\n vi2IPA_split result:\n{phoneme_split}")
+    
+    print("running vi2IPA_split silently...")
+    phoneme_split = silent_vi2IPA_split(vi_text, delimit="/")
+    print(f"\n✅ vi2IPA_split result:\n{phoneme_split}")
+
+    """
     norm = text_normalize(vi_text)
     print(f"applying vietnam g2p")
     ph, tn = g2p(norm)
     print("phones:", ph)
     print("tones :", tn)
     print("len   :", len(ph), len(tn))
+    """
 

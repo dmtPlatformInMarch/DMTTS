@@ -28,6 +28,7 @@ english_dictionary = {
     "SNS": "เอสเอ็นเอส",
     "AI": "เอไอ",
     "CEO": "ซีอีโอ",
+    "STARBUCKS": "สตาร์บัคส์",
     "A": "เอ",
     "B": "บี",
     "C": "ซี",
@@ -68,6 +69,10 @@ def normalize(text):
     text = thai_normalize(text)
     text = normalize_with_dictionary(text, etc_dictionary)
     text = re.sub(r"\d+", lambda x: num2words(int(x.group()), lang="th"), text)
+
+    #punctuation_to_remove = r"[;()\[\]\"'“”‘’\-_=+/*^~|<>«»…–—]"
+    #text = re.sub(punctuation_to_remove, "", text)
+
     text = normalize_english(text)
     text = text.lower()
     return text
@@ -431,28 +436,30 @@ def g2p_orig(norm_text, pad_start_end=True):
 
 
 if __name__ == "__main__":
-    try:
-        #from text.symbols import symbols
-        #text = "ฉันเข้าใจคุณค่าของงานของฉันและความหมายของสิ่งที่ฟอนเทนทำเพื่อคนทั่วไปเป็นอย่างดี ฉันจะใช้ชีวิตอย่างภาคภูมิใจในงานของฉันต่อไป"
-        text= "Chen Yongquan เจ้าของร้านถุงเท้าเล็กๆ ระดมทุนได้ทั้งหมด 1.129155 พันล้านหยวน"
-        text= "คุณรู้หมายเลขโทรศัพท์ของเธอไหม?"
-        print(f"text            :{text}")
-        text = text_normalize(text)
-        print(f"normalized_text :{text}")
-        phones, tones = g2p(text)
 
-        """
-        new_symbols = []
-        for ph in phones:
-            if ph not in symbols and ph not in new_symbols:
-                new_symbols.append(ph)
-                print('update!, now symbols:')
-                print(new_symbols)
-                with open('thai_symbol.txt', 'w') as f:
-                    f.write(f'{new_symbols}')
-        """
-    except Exception as e:
-        print(f"An error occurred: {e}")
+
+    # phones, tones = None, None
+
+    #from text.symbols import symbols
+    #text = "ฉันเข้าใจคุณค่าของงานของฉันและความหมายของสิ่งที่ฟอนเทนทำเพื่อคนทั่วไปเป็นอย่างดี ฉันจะใช้ชีวิตอย่างภาคภูมิใจในงานของฉันต่อไป"
+    text= "Starbucks เหลืออีก 10 เมตร : ^^^ __ -"
+    #text= "hello what's happening?"
+    print(f"text            :{text}")
+    text = text_normalize(text)
+    print(f"normalized_text :{text}")
+    phones, tones = g2p(text)
+
+    """
+    new_symbols = []
+    for ph in phones:
+        if ph not in symbols and ph not in new_symbols:
+            new_symbols.append(ph)
+            print('update!, now symbols:')
+            print(new_symbols)
+            with open('thai_symbol.txt', 'w') as f:
+                f.write(f'{new_symbols}')
+    """
+
 
     print(f"phones{len(phones)} : {phones}")
     print(f"tones{len(tones)}   : {tones}")
