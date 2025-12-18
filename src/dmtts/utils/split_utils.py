@@ -7,11 +7,14 @@ import torchaudio
 import re
 
 def split_sentence(text, min_len=2, language_str='EN'):
-    if language_str in []:
+    if language_str in ['EN']:
+        # print(f"en")
+        # exit()
         sentences = split_sentences_latin(text, min_len=min_len)
+        
         #print(f"sentences of EN & KR : {sentences}")
-    #elif language_str in ['JP']:
-    #    sentences = split_sentences_jp(text, min_lne=min_len)
+    elif language_str in ['JP']:
+        sentences = split_sentences_jp(text, min_len=min_len)
 
     else :#language_str in ['ZH', 'TH', 'VI', 'JP', 'KR']:
         sentences = split_sentences_zh(text, min_len=min_len)
@@ -23,15 +26,19 @@ def split_sentence(text, min_len=2, language_str='EN'):
 
 
 def split_sentences_latin(text, min_len=10):
-    text = re.sub('[。！？；]', '.', text)
+    # print(f"split_sentences_latin: {text}")
+   # text = re.sub('[。！？；]', '.', text)
     text = re.sub('[，]', ',', text)
     text = re.sub('[“”]', '"', text)
     text = re.sub('[‘’]', "'", text)
     text = re.sub(r"[\<\>\(\)\[\]\"\«\»]+", "", text)
-    return [item.strip() for item in txtsplit(text, 256, 512) if item.strip()]
+    # print(f"split_sentences_latin: {text}")
 
 
-def split_sentences_zh(text, min_len=2):
+    # return [item.strip() for item in txtsplit(text, 256, 512) if item.strip()]
+    return [item.strip() for item in txtsplit(text, 128, 256) if item.strip()]
+
+def split_sentences_jp(text, min_len=2):
 
     if ("こんにちは" in text) or ("コンニチハ" in text):
         text = text.replace("こんにちは", ". hello_jp_tolerance.")
@@ -45,6 +52,36 @@ def split_sentences_zh(text, min_len=2):
     text = re.sub('([,.!?;])', r'\1 $#!', text)
     # 分隔句子并去除前后空格
     # sentences = [s.strip() for s in re.split('(。|！|？|；)', text)]
+    sentences = [s.strip() for s in text.split('$#!')]
+    if len(sentences[-1]) == 0: del sentences[-1]
+
+    new_sentences = []
+    new_sent = []
+    count_len = 0
+    for ind, sent in enumerate(sentences):
+        new_sent.append(sent)
+        count_len += len(sent)
+        if count_len > min_len or ind == len(sentences) - 1:
+            count_len = 0
+            new_sentences.append(' '.join(new_sent))
+            new_sent = []
+    return merge_short_sentences_zh(new_sentences)
+
+
+
+def split_sentences_zh(text, min_len=2):
+
+    text = re.sub('[。！？；]', '.', text)
+    text = re.sub('[，]', ',', text)
+    # 将文本中的换行符、空格和制表符替换为空格
+    text = re.sub('[\n\t ]+', ' ', text)
+    # 在标点符号后添加一个空格
+    # text = re.sub('([,.!?;])', r'\1 $#!', text)
+    text = re.sub(r'(?<!\d)([,.!?;])(?!\d)', r'\1 $#!', text)
+
+    # 分隔句子并去除前后空格
+    # sentences = [s.strip() for s in re.split('(。|！|？|；)', text)]
+    # print(f"text: {text}")
     sentences = [s.strip() for s in text.split('$#!')]
     if len(sentences[-1]) == 0: del sentences[-1]
 
@@ -116,13 +153,16 @@ def merge_short_sentences_zh(sens):
 
 
 def txtsplit(text, desired_length=100, max_length=200):
+    # print(f"txtsplit: {text}")
     """Split text it into chunks of a desired length trying to keep sentences intact."""
     text = re.sub(r'\n\n+', '\n', text)
     text = re.sub(r'\s+', ' ', text)
     text = re.sub(r'[""]', '"', text)
-    text = re.sub(r'([,.?!])', r'\1 ', text)
+    # text = re.sub(r'([,.?!])', r'\1 ', text)
+    text = re.sub(r'(?<!\d)([,.?!])(?!\d)', r'\1 ', text)
+
     text = re.sub(r'\s+', ' ', text)
-    
+    # print(f"txtsplit: {text}")
     rv = []
     in_quote = False
     current = ""
@@ -181,7 +221,11 @@ if __name__ == '__main__':
     sp_text = "¡Claro! ¿En qué tema te gustaría que te hable en español? Puedo proporcionarte información o conversar contigo sobre una amplia variedad de temas, desde cultura y comida hasta viajes y tecnología. ¿Tienes alguna preferencia en particular?"
     fr_text = "Bien sûr ! En quelle matière voudriez-vous que je vous parle en français ? Je peux vous fournir des informations ou discuter avec vous sur une grande variété de sujets, que ce soit la culture, la nourriture, les voyages ou la technologie. Avez-vous une préférence particulière ?"
 
-    print(split_sentence(zh_text, language_str='ZH'))
+    # print(split_sentence(zh_text, language_str='ZH'))
+    # print(split_sentence(en_text, language_str='EN'))
+    # print(split_sentence(sp_text, language_str='SP'))
+    # print(split_sentence(fr_text, language_str='FR'))
+    en_text = "doctor kwon and doctor han from U C L ae berkley and M I T corporation reflectively has merged ae I and nine one one, demonstrating ae novel T T S machine with text normalizer N two G K and N two G K plus  plus , the plug and play module. density is nine hundred eleven square kilogram per meter cubed and acceleration is nine hundred eleven point nine one one meter per second squared."
+
     print(split_sentence(en_text, language_str='EN'))
-    print(split_sentence(sp_text, language_str='SP'))
-    print(split_sentence(fr_text, language_str='FR'))
+
