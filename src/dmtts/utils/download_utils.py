@@ -5,10 +5,10 @@ from cached_path import cached_path
 from huggingface_hub import hf_hub_download
 
 LANG_TO_HF_REPO_ID = {
-    'EN': 'kijoongkwon99/DMTTS-English',
+    'EN': 'kijoongkwon99/DMTTSv2-English',
     'JP': 'kijoongkwon99/DMTTS-Japanese',
     'ZH': 'kijoongkwon99/DMTTS-Chinese',
-    'KR': 'kijoongkwon99/DMTTS-Korean',
+    'KR': 'kijoongkwon99/DMTTSv2-Korean',
     'TH': 'kijoongkwon99/DMTTS-Thai',
     'VI': 'kijoongkwon99/DMTTS-Vietnamese',
 }
@@ -228,3 +228,8 @@ def load_pretrained_language_model(locale):
         cached_path(PRETRAINED_MODELS["DUR.pth"]),
     )       
 
+PRETRAINED_MODELS = {
+    'G.pth': 'https://myshell-public-repo-host.s3.amazonaws.com/openvoice/basespeakers/pretrained/G.pth',
+    'D.pth': 'https://myshell-public-repo-host.s3.amazonaws.com/openvoice/basespeakers/pretrained/D.pth',
+    'DUR.pth': 'https://myshell-public-repo-host.s3.amazonaws.com/openvoice/basespeakers/pretrained/DUR.pth',
+}
