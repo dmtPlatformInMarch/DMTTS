@@ -6,7 +6,7 @@ from huggingface_hub import hf_hub_download
 
 LANG_TO_HF_REPO_ID = {
     'EN': 'kijoongkwon99/DMTTSv2-English',
-    'JP': 'kijoongkwon99/DMTTS-Japanese',
+    'JP': 'kijoongkwon99/DMTTSv2-Japanese',
     'ZH': 'kijoongkwon99/DMTTS-Chinese',
     'KR': 'kijoongkwon99/DMTTSv2-Korean',
     'TH': 'kijoongkwon99/DMTTS-Thai',
