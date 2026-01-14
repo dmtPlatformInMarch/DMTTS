@@ -19,7 +19,7 @@ conda activate dmtts
 
 ### Simple Installation
 ```bash
-pip install git+https://github.com/kijoongkwon99/DMTTS.git
+pip install git+https://github.com/dmtPlatformInMarch/DMTTS.git
 python -m unidic download
 ```
 
