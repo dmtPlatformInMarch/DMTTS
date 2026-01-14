@@ -40,9 +40,9 @@ def split_sentences_latin(text, min_len=10):
 
 def split_sentences_jp(text, min_len=2):
 
-    if ("こんにちは" in text) or ("コンニチハ" in text):
-        text = text.replace("こんにちは", ". hello_jp_tolerance.")
-        text = text.replace("コンニチハ", ". hello_jp_tolerance.")
+    # if ("こんにちは" in text) or ("コンニチハ" in text):
+    #     text = text.replace("こんにちは", ". hello_jp_tolerance.")
+    #     text = text.replace("コンニチハ", ". hello_jp_tolerance.")
 
     text = re.sub('[。！？；]', '.', text)
     text = re.sub('[，]', ',', text)
