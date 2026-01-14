@@ -81,6 +81,7 @@ class TTS(nn.Module):
 
     @staticmethod
     def split_sentences_into_pieces(text, language, quiet=False):
+        # print(f"def split_senteces in to piees: {text}")
         texts = split_sentence(text, language_str=language)
         if not quiet:
             print(" > Text split to sentences.")
@@ -93,7 +94,7 @@ class TTS(nn.Module):
         language = self.language
         texts = self.split_sentences_into_pieces(text, language, quiet)
         #print("HIHIHIHIHHIHHIHIH")
-        #print(f"tts_to_file input text: {texts}")
+        print(f"tts_to_file input text: {texts}")
         audio_list = []
         if pbar:
             tx = pbar(texts)
@@ -108,19 +109,19 @@ class TTS(nn.Module):
             if language in ['EN', 'ZH_MIX_EN']:
                 t = re.sub(r'([a-z])([A-Z])', r'\1 \2', t)
             ################################################################
-            if language in ['JP']:
-                t = t.strip()
-                # ① “hello_jp_tolerance”는 미리 녹음된 wav로 대체
-                if "hello_jp_tolerance" in t:
-                    hello_path = os.path.join(BASE_DIR, "..", "assets", "hello_jp_tolerance.wav")
+            # if language in ['JP']:
+            #     t = t.strip()
+            #     # ① “hello_jp_tolerance”는 미리 녹음된 wav로 대체
+            #     if "hello_jp_tolerance" in t:
+            #         hello_path = os.path.join(BASE_DIR, "..", "assets", "hello_jp_tolerance.wav")
 
-                    #hello_path = os.path.join(BASE_DIR, "hello_jp_tolerance.wav")
-                    hello_audio, sr = soundfile.read(hello_path)
-                    hello_audio = hello_audio.astype(np.float32)
-                    audio_list.append(hello_audio)
-                    # 50ms silence 추가 (자연스러운 연결)
-                    audio_list.append(np.zeros(int(sr * 0.05), dtype=np.float32))
-                    continue
+            #         #hello_path = os.path.join(BASE_DIR, "hello_jp_tolerance.wav")
+            #         hello_audio, sr = soundfile.read(hello_path)
+            #         hello_audio = hello_audio.astype(np.float32)
+            #         audio_list.append(hello_audio)
+            #         # 50ms silence 추가 (자연스러운 연결)
+            #         audio_list.append(np.zeros(int(sr * 0.05), dtype=np.float32))
+            #         continue
             ################################################################
             device = self.device
             phones, tones, lang_ids = utils.get_text_for_tts_infer(t, language, self.hps, device, self.lang_list)
