@@ -174,21 +174,21 @@ def refine_syllables(syllables):
 
 def text_normalize(text):
     text = text.lower()
-    print(f"lower               : {text}\n")
+    # print(f"lower               : {text}\n")
     text = expand_time_english(text)
-    print(f"expand_time_english : {text}\n")
+    # print(f"expand_time_english : {text}\n")
     text = expand_initialisms(text)
-    print(f"expand_initialisms  : {text}\n")
+    # print(f"expand_initialisms  : {text}\n")
     text = expand_special_tokens(text)
-    print(f"expand_special_tokens  : {text}\n")
+    # print(f"expand_special_tokens  : {text}\n")
     text = expand_units(text)
-    print(f"expand_units        : {text}\n")
+    # print(f"expand_units        : {text}\n")
     text = normalize_numbers(text)
-    print(f"normalize_numbers   : {text}\n")
+    # print(f"normalize_numbers   : {text}\n")
     text = expand_abbreviations(text)
-    print(f"expand_abbreviations: {text}\n")
+    # print(f"expand_abbreviations: {text}\n")
     text = additional_replacement(text)
-    print(f"additional_replacement: {text}\n")
+    # print(f"additional_replacement: {text}\n")
     return text
 
 

@@ -66,11 +66,18 @@ LANG = {
     },
     "JP": {
         "symbols": [
-            'm', 'i', 'z', 'u', 'o', 'a', 'r', 'e', 'sh', 'k', 'w', 
-            'n', 't', 'h', 'd', 's', 'y', 'b', 'N', 'ry', 'j', 'g', 
-            'ts', 'q', 'ny', 'p', 'f', 'gy', 'ky', 'ch', 'hy', 'my', 
-            'o:', 'by', 'py', 'a:', '禕', 'dy', '剝', 'i:', 'u:', 'zy', 
-            'ty'
+
+            'm', 'i', 'z', 'u', 'w', 'o', 'a', 'r', 'e', 's', 'h', 'k', 
+            'n', 't', 'd', 'y', 'c', 'j', 'g', 'p', 'f', 'b', '々', 'v', 
+            '禕', '剝'
+
+            'l',
+            
+            # 'm', 'i', 'z', 'u', 'o', 'a', 'r', 'e', 'sh', 'k', 'w', 
+            # 'n', 't', 'h', 'd', 's', 'y', 'b', 'N', 'ry', 'j', 'g', 
+            # 'ts', 'q', 'ny', 'p', 'f', 'gy', 'ky', 'ch', 'hy', 'my', 
+            # 'o:', 'by', 'py', 'a:', '禕', 'dy', '剝', 'i:', 'u:', 'zy', 
+            # 'ty'
         ],
         "num_tones": 1,
         "module": "dmtts.model.text.japanese"

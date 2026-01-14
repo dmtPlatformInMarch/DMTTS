@@ -17,6 +17,7 @@ def normalize(text, use_n2gk_plus=True):
 
 g2p_kr = None
 def korean_text_to_phonemes(text, character: str = "hangeul") -> str:
+    # print(f"def koren text to phonenes iput text: {text}")
     """
 
     The input and output values look the same, but they are different in Unicode.
@@ -34,14 +35,18 @@ def korean_text_to_phonemes(text, character: str = "hangeul") -> str:
         g2p_kr = G2p()
 
     if character == "english":
+        print(f"character is english")
         from anyascii import anyascii
         text = normalize(text)
         text = g2p_kr(text)
         text = anyascii(text)
         return text
-
+    print(f"text: {text}")
     text = normalize(text)
+    print(f"text: {text}")
     text = g2p_kr(text)
+    print(f"text: {text}")
+
     text = list(hangul_to_jamo(text))  # '하늘' --> ['ᄒ', 'ᅡ', 'ᄂ', 'ᅳ', 'ᆯ']
     return "".join(text)
 
@@ -90,6 +95,7 @@ if __name__ == "__main__":
     text = "그 책 다 읽은 후에 빌려 줄래?"
     text = "용돈을 아껴 써라."
     text = "박지성은 오늘날 최고의 아시아 선수 중 한 명이다."
+    text = "starbucks의 CCTV를 확인해보세요."
 
 
     phonemes = korean_text_to_phonemes(text)
@@ -101,10 +107,10 @@ if __name__ == "__main__":
     #print(f"phones  :{phones}")
     #print(f"tones   :{tones}")
 
-    g2p_phones, g2p_tones = g2p(text)
+    # g2p_phones, g2p_tones = g2p(text)
 
-    print(f"g2p_phones({len(g2p_phones)})  :{g2p_phones}")
-    print(f"g2p_tones({len(g2p_tones)})   :{g2p_tones}")
-    print(f"len symmetry: {len(g2p_phones), len(g2p_tones)}")
+    # print(f"g2p_phones({len(g2p_phones)})  :{g2p_phones}")
+    # print(f"g2p_tones({len(g2p_tones)})   :{g2p_tones}")
+    # print(f"len symmetry: {len(g2p_phones), len(g2p_tones)}")
 
         
