@@ -21,11 +21,12 @@ models = {
 speaker_ids = models['VI'].hps.data.spk2id
 
 default_text_dict = {
-    'EN': 'The field of text-to-speech has seen rapid development recently.',
-    'ZH': 'text-to-speech 领域近年来发展迅速',
-    'JP': 'テキスト読み上げの分野は最近急速な発展を遂げています',
-    'KR': '1 1 2 입니다. 무엇을 도와드릴까요?',    
-    'VI': 'Lĩnh vực chuyển đổi văn bản thành giọng nói đang phát triển nhanh chóng hiện nay.',
+    "EN": "Did you ever hear a folk tale about a giant turtle?",
+    "ZH": "领域近年来发展迅速。",
+    "KR": "최근, 텍스트 음성 합성 분야가 급속도로 발전하고 있습니다.",
+    "VI": "xâm hại tình dục trẻ em là vấn đề của toàn cầu",
+    "TH": "ในช่วงหลังมานี้ เทคโนโลยีสังเคราะห์เสียงพูดได้พัฒนาอย่างรวดเร็ว",
+    "JP": "テキスト読み上げの分野は最近急速な発展を遂げています。",
 }
     
 def synthesize(speaker, text, speed, language, progress=gr.Progress()):

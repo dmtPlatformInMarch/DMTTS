@@ -41,11 +41,11 @@ def korean_text_to_phonemes(text, character: str = "hangeul") -> str:
         text = g2p_kr(text)
         text = anyascii(text)
         return text
-    print(f"text: {text}")
+    # print(f"text: {text}")
     text = normalize(text)
-    print(f"text: {text}")
+    # print(f"text: {text}")
     text = g2p_kr(text)
-    print(f"text: {text}")
+    # print(f"text: {text}")
 
     text = list(hangul_to_jamo(text))  # '하늘' --> ['ᄒ', 'ᅡ', 'ᄂ', 'ᅳ', 'ᆯ']
     return "".join(text)

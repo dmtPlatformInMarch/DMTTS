@@ -130,7 +130,7 @@ def convert_alpha_symbols_selective(text: str, convert_acronym: bool = True) -> 
     - 단일 문자(알파벳)는 _ALPHASYMBOL_YOMI로 치환
     - 연속 영단어(starbucks)는 그대로 둠
     - 대문자 약어(CCTV, PCA)는 철자 읽기
-    - ⭐ 추가: 영문 1글자가 일본어/한자와 붙어 있으면 그 글자만 치환
+    - 추가: 영문 1글자가 일본어/한자와 붙어 있으면 그 글자만 치환
     """
     out_tokens = []
 

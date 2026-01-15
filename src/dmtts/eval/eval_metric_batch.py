@@ -1,5 +1,4 @@
 
-# melo/eval/eval_metric_batch.py
 import os
 import sys
 import csv
@@ -13,7 +12,6 @@ import numpy as np
 import torch
 import librosa
 
-# 패키지 경로 보강 (직접 실행 시)
 if __name__ == "__main__" and __package__ is None:
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
@@ -42,11 +40,9 @@ parser.add_argument("-cs", "--ckpt_steps", type=int, default=2095000) # vi: 6130
 parser.add_argument("--speaker", required=False, help="생성에 사용된 싱글 스피커 이름 또는 ID (폴더명 매칭용)")
 parser.add_argument("--out-root", default="synthesized_speech", help="합성물 루트 (infer와 동일)")
 parser.add_argument("--gpus", default="0", help="GPU id 리스트, 예: '0' 또는 '0,1'")
-#ap.add_argument("--metrics", default="cer",help="계산할 지표 콤마구분: wer,cer,utmos,sim")
-parser.add_argument("--eval_task", default="mos", type=str, choices=["cer", "wer", "sim", "mos"])
+parser.add_argument("--eval_task", default="mos", type=str, choices=["wer", "sim", "mos"])
 
 
-#ap.add_argument("--asr-ckpt-dir", default="", help="ASR ckpt 디렉토리(빈 문자열이면 자동 다운로드/캐시)")
 parser.add_argument("--prompt-dir", default="", help="SIM 계산 시 참조 음성 디렉토리(num.wav가 있어야 함)")
 parser.add_argument("--result-dir", default="./result", help="CSV 저장 루트 디렉토리")
 parser.add_argument("--eval_gt", default=False)
@@ -72,7 +68,6 @@ eval_task = args.eval_task
 data_base_path = "/home/dev_admin/KKJ/DataSet/metadata/"
 metalst_path = data_base_path + f"/{args.task}/{args.language}.lst"
 print(f"metalst_path : {metalst_path}")
-#exit()
 
 # TODO : one of end two args.language is 'speaker' since the first trial was only single speaker
 gen_wav_dir = f"synthesized_speech/model_{args.ckpt_steps}/{args.language}/{args.language}"
@@ -82,7 +77,7 @@ print(f"gen_wav_dir: {gen_wav_dir}")
 test_set = get_single_testset(metalst_path, gen_wav_dir, gpus, language=args.language, eval_gt=eval_gt)
 
 
-save_metric_dir = f"result/{args.language}_{args.language}" # need to change second {} to speaker
+save_metric_dir = f"result/{args.language}_{args.language}" # need to change fist {} to speaker
 # --------------------------- SIM ---------------------------
 # In Single-Speaker Task, no need
 if eval_task in ["sim"]:
@@ -123,11 +118,10 @@ if eval_task in ["mos"]:
 
     for audio_path in tqdm(audio_paths, desc="Processing"):
         wav_name = Path(audio_path).stem
-        #wav_name = audio_path.stem
         wav, sr = librosa.load(audio_path, sr=16000, mono=True)
         wav_tensor = torch.from_numpy(wav).to(device).unsqueeze(0)
 
-        min_length = 16000  # 최소 1초 길이 보장 (16kHz 기준)
+        min_length = 16000  
         if wav_tensor.shape[-1] < min_length:
             wav_tensor = torch.nn.functional.pad(wav_tensor, (0, min_length - wav_tensor.shape[-1]))
 

@@ -47,7 +47,7 @@ torch.backends.cuda.enable_flash_sdp(True)
 # )  # Not available if torch version is lower than 2.0
 torch.backends.cuda.enable_math_sdp(True)
 global_step = 0
-USE_PRETRAIN = bool(int(os.environ.get("USE_PRETRAIN", "1")))  # 기본 0(=미사용)
+USE_PRETRAIN =  True # bool(int(os.environ.get("USE_PRETRAIN", "0")))  # 기본 0(=미사용)
 PRETRAIN_SPECIFIC_LANGUAGE = False # Whether using languge specific Generator
 NO_USE_PRETRAIN_G = True # Whether Not using Pretrained Generator
 
@@ -70,7 +70,7 @@ def run():
     hps = utils.get_hparams()
     print(f"hps :{hps}")
 
-    debug = False
+    debug = True
     #lang_list = ["KR"] ######################### 나중에 input으로 받게끔 해야할듯
     lang_list = hps.data.lang_list
 
@@ -451,6 +451,19 @@ def train_and_evaluate(
                 tone,
                 language,
             )
+
+            # === DEBUG: duration predictor 출력 ===
+            # if rank == 0 and batch_idx % 1000 == 0:
+            #    pred = torch.exp(logw)[0].detach().cpu()
+            #    teach = torch.exp(logw_)[0].detach().cpu()
+            #    print("\n=== Duration Debug ===")
+            #    print("pred durations:", pred.tolist())
+            #    print("pred sum:", pred.sum().item())
+            #    print("teacher durations:", teach.tolist())
+            #    print("teacher sum:", teach.sum().item())
+
+
+
             #print("#################### 2 ####################")
             mel = spec_to_mel_torch(
                 spec,
@@ -675,7 +688,7 @@ def evaluate(hps, generator, eval_loader, writer_eval):
                     #bert,
                     #ja_bert,
                     y=spec,
-                    max_len=1000,
+                    max_len=1000, # -> 이거 맞음?
                     sdp_ratio=0.0 if not use_sdp else 1.0,
                 )
                 y_hat_lengths = mask.sum([1, 2]).long() * hps.data.hop_length

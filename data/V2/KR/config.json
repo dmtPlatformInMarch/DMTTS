@@ -1,10 +1,10 @@
 {
   "train": {
     "log_interval": 200,
-    "eval_interval": 1000,
+    "eval_interval": 300,
     "seed": 52,
     "epochs": 10000,
-    "learning_rate": 0.00005,
+    "learning_rate": 5e-05,
     "betas": [
       0.8,
       0.99
@@ -21,8 +21,8 @@
     "skip_optimizer": true
   },
   "data": {
-    "training_files": "",
-    "validation_files": "",
+    "training_files": "/home/dev_admin/KKJ/TTS-model/DMTTS/data/V2/KR/train.list",
+    "validation_files": "/home/dev_admin/KKJ/TTS-model/DMTTS/data/V2/KR/val.list",
     "max_wav_value": 32768.0,
     "sampling_rate": 44100,
     "filter_length": 2048,
@@ -32,9 +32,11 @@
     "mel_fmin": 0.0,
     "mel_fmax": null,
     "add_blank": true,
-    "n_speakers": 256,
+    "n_speakers": 0,
     "cleaned_text": true,
-    "lang_list": [],
+    "lang_list": [
+      "JP"
+    ],
     "spk2id": {}
   },
   "model": {
@@ -93,5 +95,63 @@
     "n_layers_q": 3,
     "use_spectral_norm": false,
     "gin_channels": 256
-  }
+  },
+  "num_languages": 1,
+  "num_tones": 1,
+  "symbols": [
+    "_",
+    "N",
+    "a",
+    "a:",
+    "b",
+    "by",
+    "ch",
+    "d",
+    "dy",
+    "e",
+    "f",
+    "g",
+    "gy",
+    "h",
+    "hy",
+    "i",
+    "i:",
+    "j",
+    "k",
+    "ky",
+    "m",
+    "my",
+    "n",
+    "ny",
+    "o",
+    "o:",
+    "p",
+    "py",
+    "q",
+    "r",
+    "ry",
+    "s",
+    "sh",
+    "t",
+    "ts",
+    "ty",
+    "u",
+    "u:",
+    "w",
+    "y",
+    "z",
+    "zy",
+    "剝",
+    "禕",
+    " ",
+    "!",
+    "?",
+    "…",
+    ",",
+    ".",
+    "'",
+    "-",
+    "SP",
+    "UNK"
+  ]
 }

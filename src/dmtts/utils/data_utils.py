@@ -8,9 +8,10 @@ from dmtts.model import commons
 from dmtts.train.mel_processing import spectrogram_torch, mel_spectrogram_torch
 from dmtts.utils.hparam_utils import load_filepaths_and_text
 from dmtts.utils.hparam_utils import load_wav_to_torch_librosa as load_wav_to_torch
+# from dmtts.utils.hparam_utils import load_wav_to_torch
 from dmtts.model.text.symbols import cleaned_text_to_sequence
 import numpy as np
-
+import torchaudio
 """Multi speaker version"""
 
 
@@ -50,6 +51,69 @@ class TextAudioSpeakerLoader(torch.utils.data.Dataset):
         random.shuffle(self.audiopaths_sid_text)
         self._filter()
 
+
+
+    def _filter_new(self):
+        """
+        Filter text & store spec lengths (SAFE VERSION)
+        """
+
+        audiopaths_sid_text_new = []
+        lengths = []
+        skipped = 0
+
+        logger.info("Init dataset...")
+
+        for item in tqdm(self.audiopaths_sid_text):
+            try:
+                _id, spk, language, text, phones, tone = item
+            except:
+                print(item)
+                raise
+
+            audiopath = f"{_id}"
+
+            # text length check
+            if self.min_text_len <= len(phones) <= self.max_text_len:
+
+                phones = phones.split(" ")
+                tone = [int(i) for i in tone.split(" ")]
+
+                # ------- HERE: Load wav SAFELY -------
+                try:
+                    waveform, sr = torchaudio.load(audiopath)
+
+                    # resample if needed
+                    if sr != self.sampling_rate:
+                        waveform = torchaudio.functional.resample(
+                            waveform, sr, self.sampling_rate
+                        )
+                        sr = self.sampling_rate
+
+                    # number of samples (mono assumed later)
+                    n_samples = waveform.shape[1]
+
+                    spec_len = n_samples // self.hop_length
+
+                except Exception as e:
+                    logger.warning(f"[SKIP AUDIO] {audiopath} load error: {e}")
+                    skipped += 1
+                    continue
+                # -------------------------------------
+
+                audiopaths_sid_text_new.append(
+                    [audiopath, spk, language, text, phones, tone]
+                )
+                lengths.append(spec_len)
+
+            else:
+                skipped += 1
+
+        logger.info(f'min: {min(lengths)}; max: {max(lengths)}')
+        logger.info(f'skipped: {skipped}, total: {len(self.audiopaths_sid_text)}')
+
+        self.audiopaths_sid_text = audiopaths_sid_text_new
+        self.lengths = lengths
 
     def _filter(self):
         """
@@ -108,7 +172,9 @@ class TextAudioSpeakerLoader(torch.utils.data.Dataset):
     def get_audio(self, filename):
         #print(f"data_utils.py -> get_audio()")
         #print(f"self.sampling_rate : {self.sampling_rate}")
-        audio_norm, sampling_rate = load_wav_to_torch(filename, self.sampling_rate)
+        audio_norm, sampling_rate = load_wav_to_torch(filename, self.sampling_rate) 
+
+
         #print(f"real_samplingrate  : {sampling_rate}")
         if sampling_rate != self.sampling_rate:
             raise ValueError(

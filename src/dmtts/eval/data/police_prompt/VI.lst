@@ -1,0 +1,100 @@
+0001|VI|Tôi là cảnh sát. Tôi ở đây để giúp bạn.
+0002|VI|Bạn nghe tôi rõ không?
+0003|VI|Bạn muốn dùng ngôn ngữ nào?
+0004|VI|Tôi có thể kết nối thông dịch viên. Vui lòng chờ một chút.
+0005|VI|Vui lòng nói chậm và rõ ràng.
+0006|VI|Xin đừng cúp máy, hãy giữ máy.
+0007|VI|Hít thở sâu. Bạn không đơn độc.
+0008|VI|Hiện có ai ở cùng bạn không?
+0009|VI|Tên bạn là gì?
+0010|VI|Số điện thoại liên lạc tốt nhất của bạn là gì?
+0011|VI|Vị trí chính xác của bạn ở đâu?
+0012|VI|Vui lòng cho biết địa chỉ đầy đủ (kèm số căn hộ).
+0013|VI|Bạn đang ở thành phố và quận nào?
+0014|VI|Ngã tư hoặc địa điểm nổi bật gần nhất là gì?
+0015|VI|Bạn đang ở tầng mấy?
+0016|VI|Bạn có thể chia sẻ vị trí trực tiếp không?
+0017|VI|Cổng, lối vào, hoặc mã tòa nhà là gì?
+0018|VI|Bạn đang ở trong nhà hay ngoài trời?
+0019|VI|Nơi bạn đang ở hiện có an toàn không?
+0020|VI|Tên địa điểm hoặc cơ sở là gì?
+0021|VI|Lối ra tàu điện ngầm hoặc trạm xe buýt gần nhất là đâu?
+0022|VI|Bạn có thể mô tả cách để lực lượng cứu hộ tìm thấy bạn không?
+0023|VI|Vui lòng đánh vần tên của bạn.
+0024|VI|Ngày sinh hoặc tuổi của bạn là bao nhiêu?
+0025|VI|Mối quan hệ của bạn với người gặp nguy hiểm là gì?
+0026|VI|Có bao nhiêu người đang ở cùng bạn?
+0027|VI|Có ai mất tích hoặc chưa xác định được không?
+0028|VI|Bạn có số điện thoại khác để chúng tôi liên lạc không?
+0029|VI|Pin điện thoại của bạn có sắp hết không?
+0030|VI|Có ai có thể ra ngoài đón cảnh sát không?
+0031|VI|Hãy cho tôi biết chính xác chuyện gì đã xảy ra.
+0032|VI|Đây là cấp cứu y tế, cháy hay tội phạm?
+0033|VI|Có ai bị thương hoặc bất tỉnh không?
+0034|VI|Nghi phạm vẫn còn ở đó không?
+0035|VI|Có lửa, khói, hoặc mùi gas không?
+0036|VI|Đây có phải là tai nạn giao thông không? Xe có chắn đường không?
+0037|VI|Có ai bị mắc kẹt hoặc không thể di chuyển không?
+0038|VI|Có vũ khí liên quan không?
+0039|VI|Đây có phải là bạo lực gia đình hoặc tranh chấp gia đình không?
+0040|VI|Đây có phải là trường hợp người mất tích không?
+0041|VI|Có vật liệu nguy hiểm hoặc hóa chất không?
+0042|VI|Tình hình hiện tại có đang xấu đi không?
+0043|VI|Nếu có thể, hãy di chuyển đến nơi an toàn.
+0044|VI|Đừng đối đầu với nghi phạm. Hãy ẩn nấp nếu cần.
+0045|VI|Khóa cửa và giữ im lặng.
+0046|VI|Nếu thấy khói hoặc lửa, hãy rời khỏi tòa nhà.
+0047|VI|Nếu có khói, hãy hạ thấp người và che miệng.
+0048|VI|Nếu an toàn, hãy tắt gas.
+0049|VI|Tấp xe an toànและ bật đèn cảnh báo.
+0050|VI|Giữ khoảng cách an toàn với đường.
+0051|VI|Tránh dây điện bị đứt và công trình hư hại.
+0052|VI|Giữ trẻ em và vật nuôi ở gần bạn.
+0053|VI|Nếu thấy không an toàn, hãy đến nơi sáng sủa hoặc đông người.
+0054|VI|Hãy làm theo hướng dẫn của tôi cho đến khi lực lượng đến nơi.
+0055|VI|Người đó còn thở không?
+0056|VI|Người đó tỉnh táo và phản ứng không?
+0057|VI|Chảy máu ở đâu? Có nhiều không?
+0058|VI|Hãy dùng khăn sạch ép chặt vết thương.
+0059|VI|Có dị ứng hoặc bệnh lý nào không?
+0060|VI|Người đó có đang mang thai hoặc vừa phẫu thuật gần đây không?
+0061|VI|Có đang dùng thuốc nào không?
+0062|VI|Tuổi và cân nặng ước chừng là bao nhiêu?
+0063|VI|Từ lúc bắt đầu gọi đến giờ tình trạng có thay đổi không?
+0064|VI|Tôi sẽ hướng dẫn sơ cứu cho đến khi có người đến. Bạn sẵn sàng chứ?
+0065|VI|Có bao nhiêu nghi phạm?
+0066|VI|Họ trông như thế nào? Quần áo và chiều cao?
+0067|VI|Họ có hình xăm hoặc dấu hiệu dễ thấy không?
+0068|VI|Họ có mang vũ khí không?
+0069|VI|Họ đi hướng nào?
+0070|VI|Hãng xe, mẫu xe và màu sắc là gì?
+0071|VI|Bạn có biết biển số xe hoặc một phần của nó không?
+0072|VI|Có bao nhiêu người trong xe?
+0073|VI|Xe có bị hư hại hoặc có đặc điểm nổi bật không?
+0074|VI|Lần cuối cùng thấy nghi phạm ở đâu?
+0075|VI|Đội救 hộ đang trên đường đến.
+0076|VI|Dự kiến vài phút nữa sẽ đến. Vui lòng giữ máy.
+0077|VI|Hãy giữ điện thoại sẵn sàng để nhận cập nhật.
+0078|VI|Nếu có thể, bật đèn ngoài trời hoặc chớp đèn.
+0079|VI|Nếu an toàn, hãy gửi vị trí trực tiếp đến số này.
+0080|VI|Khi lực lượng đến gần, vui lòng mở cửa.
+0081|VI|Nếu thấy lực lượng, hãy vẫy tay ra hiệu một cách an toàn.
+0082|VI|Tôi sẽ ở cùng bạn cho đến khi họ đến.
+0083|VI|Đừng chạm vào hay di chuyển bất cứ thứ gì tại hiện trường.
+0084|VI|Nếu an toàn, hãy giữ nhân chứng ở gần.
+0085|VI|Giữ thú cưng trong phòng khác cho an toàn.
+0086|VI|Nếu ở trong nhà, hãy bật đèn và dọn lối vào.
+0087|VI|Nếu ở ngoài trời, hãy tránh xa giao thông và nguy hiểm.
+0088|VI|Giữ yên tĩnh để nghe hướng dẫn.
+0089|VI|Nếu có người ngã gục, hãy báo cho tôi ngay.
+0090|VI|Nếu tình hình thay đổi, hãy báo ngay.
+0091|VI|Bạn đang làm rất tốt.
+0092|VI|Sự trợ giúp sắp đến nơi.
+0093|VI|Tôi hiểu điều này rất căng thẳng. Tôi ở đây cùng bạn.
+0094|VI|Nếu cuộc gọi bị ngắt, tôi sẽ gọi lại cho bạn.
+0095|VI|Bạn có câu hỏi nào cho tôi không?
+0096|VI|Còn điều gì tôi cần biết nữa không?
+0097|VI|Bây giờ bạn có cảm thấy an toàn hơn trước không?
+0098|VI|Chúng tôi đang phối hợp với các lực lượng khẩn cấp khác.
+0099|VI|Hãy giữ cuộc gọi cho đến khi tôi nói có thể ngắt máy.
+0100|VI|Cảm ơn sự hợp tác của bạn. Đội cứu hộ đang đến.

@@ -27,11 +27,11 @@ LANG_TO_LOCAL_REPO_ID = {
 
 def parse_args():
     p = argparse.ArgumentParser(description="DMTTS CLI inference")
-    p.add_argument("-v", "--version_of_model", type=int, default=1, help="Model version number (int)")
+    p.add_argument("-v", "--version_of_model", type=int, default=2, help="Model version number (int)")
     p.add_argument("-lc", "--language_scope", choices=["mono", "multi"], default="mono")
     p.add_argument("-sc", "--speaker_scope", choices=["single", "multi"], default="single")
-    p.add_argument("-l", "--language", type=str, choices=["JP", "KR", "EN", "VI", "ZH", "TH"], default="KR")
-    p.add_argument("-cs", "--ckpt_steps", type=int)
+    p.add_argument("-l", "--language", type=str, choices=["JP", "KR", "EN", "VI", "ZH", "TH"], default="JP")
+    p.add_argument("-cs", "--ckpt_steps", type=int, default=793200)
 
     p.add_argument("--speed", type=float, default=1.0, help="Speech speed (0.1 ~ 10.0)")
     p.add_argument("--device", default="auto", choices=["auto", "cpu", "cuda"], help="Device selection")
@@ -58,26 +58,27 @@ def main():
     # 경로 결정 & 모델 로드
     #ckpt_path, config_path = _resolve_ckpt_config(args.language, args.weights_root, args.ckpt, args.config)
     
-    
-    #ckpt_path, config_path = _resolve_ckpt_config(args.language, args.version_of_model, args.ckpt_steps)
-    ckpt_path, config_path = None, None
+    if args.ckpt_steps:
+        ckpt_path, config_path = _resolve_ckpt_config(args.language, args.version_of_model, args.ckpt_steps)
+    else:
+        ckpt_path, config_path = None, None
     if ckpt_path:
         model = TTS(language=args.language, device=args.device, config_path=config_path, ckpt_path=ckpt_path)
     else:
         # HF에서 자동 다운로드 사용
-        model = TTS(language=args.language, device=args.device, use_hf=True, local_repo_path_dict=LANG_TO_LOCAL_REPO_ID) # False for local
+        model = TTS(language=args.language, device=args.device, use_hf=True, local_repo_path_dict=LANG_TO_LOCAL_REPO_ID, skip_snap_seed=True) # False for local
 
     if args.list_speakers:
         for name, sid in model.hps.data.spk2id.items():
             print(f"- {name}: {sid}")
-            s_name, s_sid = name, sid
-
+            # s_name, s_sid = name, sid
+            targets = list(model.hps.data.spk2id.items())
 
     text = _read_text(args)
     if not text:
         raise ValueError("No text provided. Use --text / --text-file / --stdin (or default not available).")
 
-    targets = _resolve_speakers(model, s_name)
+    # targets = _resolve_speakers(model, s_name)
     out_root = os.path.abspath(args.output_dir)
     _ensure_dir(out_root)
 
@@ -85,6 +86,7 @@ def main():
         rel = args.filename.format(speaker=spk_name)
         save_path = os.path.join(out_root, rel)
         _ensure_dir(os.path.dirname(save_path))
+        # print(f"INFER_CLI (text): {text}")
         model.tts_to_file(text, spk_id, save_path, speed=args.speed) ## inference
         print(f"[OK] {spk_name:>12s} -> {save_path}")
 

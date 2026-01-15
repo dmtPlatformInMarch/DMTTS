@@ -23,9 +23,9 @@ def get_text_for_tts_infer(text, language_str, hps, device, lang_list=None):
     #print(f"lang_list   :{lang_list}")
 
     norm_text, phone, tone = clean_text(text, language_str)
-    #print(f"norm_text   :{norm_text}")
-    #print(f"phone       :{phone}")
-    #print(f"tone        :{tone}")
+    # print(f"norm_text   :{norm_text}")
+    # print(f"phone       :{phone}")
+    # print(f"tone        :{tone}")
     phone, tone, language = cleaned_text_to_sequence(phone, tone, language_str, lang_list=lang_list)
 
     if hps.data.add_blank:
@@ -232,7 +232,7 @@ def get_hparams(init=True):
     )
     
     #parser.add_argument('--lang_list', type=str, default="KR EN VI ZH TH")
-    parser.add_argument('--version_of_model', type=int, default=1)
+    parser.add_argument('--version_of_model', type=int, default=2)
 
     parser.add_argument('--local_rank', type=int, default=0)
     parser.add_argument('--world-size', type=int, default=1)
@@ -246,7 +246,7 @@ def get_hparams(init=True):
                             help='pretrain model duration')
     #parser.add_argument('--lang_list', type=list, default=["VI"],help="language_list to train together")
     args = parser.parse_args()
-    model_dir = os.path.join(f"./logs",f"V{args.version_of_model}", args.model)
+    model_dir = os.path.join(f"../../../ckpts",f"V{args.version_of_model}", args.model)
 
     os.makedirs(model_dir, exist_ok=True)
 

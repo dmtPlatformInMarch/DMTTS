@@ -21,8 +21,8 @@ from dmtts.model.text.cleaner import clean_text
     default="data/example/metadata.list",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
-@click.option("--train_language", default="ZH")
-@click.option("--version_of_model", default=1)
+@click.option("--train_language", default="JP")
+@click.option("--version_of_model", default=2)
 @click.option("--cleaned-path", default=None)
 @click.option("--train-path", default=None)
 @click.option("--val-path", default=None)
@@ -31,8 +31,8 @@ from dmtts.model.text.cleaner import clean_text
     default="../../../data/config.json",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
-@click.option("--val-per-spk", default=4)
-@click.option("--max-val-total", default=8)
+@click.option("--val-per-spk", default=10)
+@click.option("--max-val-total", default=10)
 @click.option("--clean/--no-clean", default=True)
 def main(
     metadata: str,

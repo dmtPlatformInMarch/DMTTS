@@ -50,7 +50,9 @@ setuptools.setup(
         'dmtts.model.text': [
             'opencpop-strict.txt', 'wiktionary-23-7-2022-clean.tsv', 'cmudict.rep', 'cmudict_cache.pickle'
         ],
-        'dmtts.assets': ['hello_jp_tolerance.wav'],
+        'dmtts.assets': [
+            'hello_jp_tolerance.wav'
+        ],
     },
     include_package_data=True,
 )
