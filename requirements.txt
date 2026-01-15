@@ -37,3 +37,5 @@ zhon
 python-Levenshtein==0.23.0
 #jiwer==2.5.1
 pythainlp
+jphones==1.0.0
+japanese-numbers-python==0.1.1
