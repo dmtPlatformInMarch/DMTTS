@@ -38,4 +38,4 @@ python-Levenshtein==0.23.0
 #jiwer==2.5.1
 pythainlp
 # git+https://github.com/JRMeyer/jphones.git
-# git+https://github.com/Greatdane/Convert-Numbers-to-Japanese.git
+japanese-numbers-python==0.2.1
