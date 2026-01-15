@@ -22,7 +22,7 @@ conda activate dmtts
 pip install git+https://github.com/dmtPlatformInMarch/DMTTS.git
 
 # for japanese, specifically
-pip install git+git+https://github.com/JRMeyer/jphones.git
+pip install git+https://github.com/JRMeyer/jphones.git
 python -m unidic download
 ```
 
