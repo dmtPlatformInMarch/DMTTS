@@ -3,7 +3,7 @@ torch
 torchaudio
 cached_path
 vinorm
-underthesea
+underthesea==1.3.3
 eng_to_ipa
 viphoneme
 transformers==4.27.4
