@@ -37,9 +37,8 @@ def load_or_download_config_orig(locale, use_hf=True, config_path=None, local_re
                 filename="config.json"
             )
         except Exception as e:
-
             use_hf = False  # fallback to local
-
+            raise e
     if not use_hf:
         assert local_repo_path_dict is not None, \
             "local_repo_path_dict must be provided when use_hf=False"
