@@ -19,20 +19,21 @@ conda activate dmtts
 
 ### Simple Installation
 ```bash
-pip install git+https://github.com/dmtPlatformInMarch/DMTTS.git
+pip install git+https://github.com/dmtPlatformInMarch/DMTTS.git 
 ```
 
-## if Ubuntu 22.04 
+#### if Ubuntu 22.04 
 ```bash
-pip install git+https://github.com/dmtPlatformInMarch/DMTTS.git@v1.0.0
+pip install git+https://github.com/dmtPlatformInMarch/DMTTS.git@ubuntu.22.04
 ```
 
-## if Ubuntu 20.04
+#### if Ubuntu 20.04
 ```bash
-pip install git+https://github.com/dmtPlatformInMarch/DMTTS.git@v1.0.1
+pip install git+https://github.com/dmtPlatformInMarch/DMTTS.git@ubuntu.20.04
+
 ```
 
-# for japanese, additionally
+### for japanese, additionally
 ```bash
 pip install git+https://github.com/JRMeyer/jphones.git
 python -m unidic download
