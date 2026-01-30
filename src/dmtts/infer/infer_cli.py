@@ -30,8 +30,8 @@ def parse_args():
     p.add_argument("-v", "--version_of_model", type=int, default=2, help="Model version number (int)")
     p.add_argument("-lc", "--language_scope", choices=["mono", "multi"], default="mono")
     p.add_argument("-sc", "--speaker_scope", choices=["single", "multi"], default="single")
-    p.add_argument("-l", "--language", type=str, choices=["JP", "KR", "EN", "VI", "ZH", "TH"], default="JP")
-    p.add_argument("-cs", "--ckpt_steps", type=int, default=793200)
+    p.add_argument("-l", "--language", type=str, choices=["JP", "KR", "EN", "VI", "ZH", "TH", "RU"], default="RU")
+    p.add_argument("-cs", "--ckpt_steps", type=int, default=700000)
 
     p.add_argument("--speed", type=float, default=1.0, help="Speech speed (0.1 ~ 10.0)")
     p.add_argument("--device", default="auto", choices=["auto", "cpu", "cuda"], help="Device selection")

@@ -1,9 +1,9 @@
 import re
 import unicodedata
 
-from transformers import AutoTokenizer
+# from transformers import AutoTokenizer
 from dmtts.model.text.kr_normalizer import N2gk, N2gkPlus
-from anyascii import anyascii
+# from anyascii import anyascii
 from jamo import hangul_to_jamo
 
 def normalize(text, use_n2gk_plus=True):

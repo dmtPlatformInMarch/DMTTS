@@ -54,6 +54,7 @@ DEFAULT_TEXT = {
     "VI": "xâm hại tình dục trẻ em là vấn đề của toàn cầu",
     "TH": "ในช่วงหลังมานี้ เทคโนโลยีสังเคราะห์เสียงพูดได้พัฒนาอย่างรวดเร็ว",
     "JP": "テキスト読み上げの分野は最近急速な発展を遂げています。",
+    "RU": "В последнее время сфера синтеза речи развивается быстрыми темпами."
 }
 
 LANG_TO_LOCAL_REPO_ID = {
@@ -134,6 +135,7 @@ LANG_TO_HF_REPO_ID = {
     'KR': 'kijoongkwon99/DMTTS-Korean',
     'TH': 'kijoongkwon99/DMTTS-Thai',
     'VI': 'kijoongkwon99/DMTTS-Vietnamese',
+    'RU': 'kijoongkwon99/DMTTS-Russian',
 }
 
 ```

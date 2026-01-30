@@ -35,7 +35,8 @@ matplotlib==3.4.3
 faster-whisper
 zhon
 python-Levenshtein==0.23.0
-#jiwer==2.5.1
 pythainlp
 # git+https://github.com/JRMeyer/jphones.git
 japanese-numbers-python==0.2.1
+ruaccent==1.5.8.3
+jiwer==4.0.0

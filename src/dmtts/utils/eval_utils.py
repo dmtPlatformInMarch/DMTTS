@@ -87,20 +87,22 @@ def make_save_path(out_root: str, step: str, language: str, speaker_name: str, n
 
 def get_single_testset(metalst, gen_wav_dir, gpus, language, eval_gt=False, eval_num=100):
     if eval_gt:
-        metalst = f"/home/dev_admin/KKJ/TTS-model/DMTTS/data/V1/{language}/metadata.list"
+        # metalst = f"/home/dev_admin/KKJ/TTS-model/DMTTS/data/V1/{language}/metadata.list"
+        metalst = f"/home/dev_admin/KKJ/TTS-model/DMTTS/src/dmtts/eval/data/ground_truth/{language}/metadata.lst"
     f = open(metalst)
     lines= f.readlines()
     f.close()
 
-    if eval_gt:
-        random.seed(42)  # 재현성 원하면 유지 / 제거해도 됨
-        lines = random.sample(lines, eval_num)
+    # if eval_gt:
+    #     random.seed(42)  # 재현성 원하면 유지 / 제거해도 됨
+    #     lines = random.sample(lines, eval_num)
 
     test_set_ = []
 
     for line in tqdm(lines):
         if eval_gt:
-            path, _, langauge, prompt_text, _, _ = line.strip().split("|")
+            # path, _, langauge, prompt_text, _, _ = line.strip().split("|")
+            path, speaker, language, prompt_text = line.strip().split("|")
             if not os.path.exists(path):
                 raise FileNotFoundError(f"Ground Truth wav not found: {path}")
             test_set_.append((path, prompt_text))
@@ -146,8 +148,9 @@ def load_asr_model(lang, ckpt_dir=""):
 
 # WER Evaluation, the way Seed-TTS does
 
-def caculate_cer(truth, hypo):
+def calulate_cer_orig(truth, hypo):
     from jiwer import compute_measures
+
     measures = compute_measures(truth, hypo)
     total_chars = len(truth.replace(" ", "")) # exclude space
     if total_chars == 0:
@@ -155,6 +158,41 @@ def caculate_cer(truth, hypo):
 
     cer = (measures["substitutions"] + measures["deletions"] + measures["insertions"]) / total_chars
     return cer
+
+
+def calculate_cer(truth, hypo):
+    from jiwer import process_characters
+    measures = process_characters(truth, hypo)
+
+    total_chars = measures.hits + measures.substitutions + measures.deletions
+    if total_chars == 0:
+        return 0.0
+
+    cer = (
+        measures.substitutions
+        + measures.deletions
+        + measures.insertions
+    ) / total_chars
+
+    return cer
+
+def calculate_wer(truth: str, hypo: str) -> float:
+    from jiwer import process_words
+
+    result = process_words(truth, hypo)
+
+    # reference word count
+    denom = result.hits + result.substitutions + result.deletions
+    if denom == 0:
+        return 0.0
+
+    wer = (
+        result.substitutions
+        + result.deletions
+        + result.insertions
+    ) / denom
+
+    return wer
 
 def create_asr_result(truth: str, hypo: str, dataset_name: str) -> str:
     os.makedirs("ASR_RESULT", exist_ok=True)
@@ -199,7 +237,8 @@ def run_asr_wer(args):
     wers = []
     cers = []
 
-    from jiwer import compute_measures
+    # from jiwer import compute_measures
+    # from jiwer import process_words
 
     for gen_wav, truth in tqdm(test_set):
         if lang == "zh":
@@ -209,7 +248,7 @@ def run_asr_wer(args):
         # this part causing errors
         else:
 
-            segments, _ = asr_model.transcribe(gen_wav, temperature=[0.0], vad_filter=True, condition_on_previous_text=False, beam_size=5) #temperature? 온도? -> 이게 들어가면 변형 생성..? -> 영어로 측정
+            segments, _ = asr_model.transcribe(gen_wav, temperature=[0.0], vad_filter=True, condition_on_previous_text=False, beam_size=5) 
 
             # specifically this part
             #hypo = segments["text"]
@@ -232,10 +271,12 @@ def run_asr_wer(args):
         else:  
             truth = " ".join(truth.split())  
             hypo = " ".join(hypo.split())
-        measures = compute_measures(truth, hypo)
+        # measures = compute_measures(truth, hypo)
+        # measures = process_words(truth, hypo)
 
-        cer = caculate_cer(truth, hypo)
-        wer = measures["wer"]
+        cer = calculate_cer(truth, hypo)
+        wer = calculate_wer(truth, hypo)
+        # wer = measures["wer"]
 
         print(f"truth : {truth}")
         print(f"hypo  : {hypo}")

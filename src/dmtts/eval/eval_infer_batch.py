@@ -27,13 +27,13 @@ except Exception:
 def parse_args():
     p = argparse.ArgumentParser(description="DMTTS batch inference from meta list (num|language|text)")
     p.add_argument("--task", type=str, default="police_prompt")
-    p.add_argument("--language", type=str, default="TH")
+    p.add_argument("--language", type=str, default="RU")
     p.add_argument("--speaker", required=False, help="")
     p.add_argument("--out-root", default="synthesized_speech", help="output directory root")
     p.add_argument("--speed", type=float, default=1.0, help="발화 속도 (0.1~10.0)")
     p.add_argument("--device", default="auto", choices=["auto", "cpu", "cuda"], help="device")
 
-    p.add_argument("-cs", "--ckpt_steps", type=int, default=2095000) 
+    p.add_argument("-cs", "--ckpt_steps", type=int, default=700000) 
     p.add_argument("-v", "--version_of_model", type=int, default=1, help="Model version number (int)")
 
     p.add_argument("--resume", action="store_true", help="이미 존재하는 파일은 건너뜀")
@@ -46,7 +46,7 @@ def main():
     use_pretrained = (args.ckpt_steps == 0)
 
 
-    data_base_path = "/home/dev_admin/KKJ/DataSet/metadata/"
+    data_base_path = "/home/dev_admin/KKJ/TTS-model/DMTTS/src/dmtts/eval/data"
     metalst_path = data_base_path + f"/{args.task}/{args.language}.lst"
     metainfo = get_metainfo(metalst_path)
     if not metainfo:

@@ -96,7 +96,18 @@ LANG = {
         ],
         "num_tones": 6,
         "module": "dmtts.model.text.thai"
-    }
+    },
+    "RU": {
+        "symbols" : [
+            'с', 'т', 'р', 'е', 'в', 'о', 'ж', 'н', 'ы', 'м', 'ч', 'у', 'б', 'ь', 
+            'я', 'з', 'а', 'п', 'к', 'г', 'и', 'ю', 'л', 'д', 'ш', 'щ', 'ё', 'й', 
+            'х', 'ц', 'э', 'ф', 'ъ', '6', '1', '2', '9',
+
+            '',
+            ],
+        "num_tones": 2,
+        "module": "dmtts.model.text.russian"
+    },
 }
 
 def prefix_language(lang_dict):

@@ -11,6 +11,7 @@ LANG_TO_HF_REPO_ID = {
     'KR': 'kijoongkwon99/DMTTSv2-Korean',
     'TH': 'kijoongkwon99/DMTTS-Thai',
     'VI': 'kijoongkwon99/DMTTS-Vietnamese',
+    'RU': 'kijoongkwon99/DMTTS-Russian',
 }
 
 LANG_TO_LOCAL_REPO_ID = {
@@ -20,6 +21,7 @@ LANG_TO_LOCAL_REPO_ID = {
     'KR': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Korean',
     'TH': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Thai',
     'VI': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Vietnamese',
+    'RU': '/home/dev_admin/KKJ/TTS-model/DMTTS/local/DMTTS-Russian',
 }
 
 def load_or_download_config_orig(locale, use_hf=True, config_path=None, local_repo_path_dict=None, skip_seed=True):

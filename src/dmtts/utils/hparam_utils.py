@@ -232,7 +232,7 @@ def get_hparams(init=True):
     )
     
     #parser.add_argument('--lang_list', type=str, default="KR EN VI ZH TH")
-    parser.add_argument('--version_of_model', type=int, default=2)
+    parser.add_argument('--version_of_model', type=int, default=1)
 
     parser.add_argument('--local_rank', type=int, default=0)
     parser.add_argument('--world-size', type=int, default=1)

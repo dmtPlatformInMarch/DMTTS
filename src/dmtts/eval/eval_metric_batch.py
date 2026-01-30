@@ -35,8 +35,8 @@ except Exception:
 
 parser = argparse.ArgumentParser(description="Compute WER/CER/UTMOS and save per-language CSV")
 parser.add_argument("--task", type=str, default="police_prompt", help="메타가 위치한 상위 폴더명")
-parser.add_argument("--language", type=str, default="TH")
-parser.add_argument("-cs", "--ckpt_steps", type=int, default=2095000) # vi: 613000
+parser.add_argument("--language", type=str, default="RU")
+parser.add_argument("-cs", "--ckpt_steps", type=int, default=700000) # vi: 613000
 parser.add_argument("--speaker", required=False, help="생성에 사용된 싱글 스피커 이름 또는 ID (폴더명 매칭용)")
 parser.add_argument("--out-root", default="synthesized_speech", help="합성물 루트 (infer와 동일)")
 parser.add_argument("--gpus", default="0", help="GPU id 리스트, 예: '0' 또는 '0,1'")
@@ -65,12 +65,12 @@ wavlm_ckpt_dir = "../checkpoints/UniSpeech/wavlm_large_finetune.pth" # path to l
 
 
 eval_task = args.eval_task
-data_base_path = "/home/dev_admin/KKJ/DataSet/metadata/"
+data_base_path = "/home/dev_admin/KKJ/TTS-model/DMTTS/src/dmtts/eval/data"
 metalst_path = data_base_path + f"/{args.task}/{args.language}.lst"
 print(f"metalst_path : {metalst_path}")
 
 # TODO : one of end two args.language is 'speaker' since the first trial was only single speaker
-gen_wav_dir = f"synthesized_speech/model_{args.ckpt_steps}/{args.language}/{args.language}"
+gen_wav_dir = f"synthesized_speech/model_{args.ckpt_steps}/{args.language}/{args.speaker}"
 
 print(f"gen_wav_dir: {gen_wav_dir}")
 
